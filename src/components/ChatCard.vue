@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-full bg-white dark:bg-gray-900 rounded-xl shadow p-4">
+  <div class="flex flex-col h-[500px] bg-white dark:bg-gray-900 rounded-xl shadow p-4">
     <div class="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-100">🤖 AI Study Buddy</div>
 
     <div ref="chatContainer" class="flex-1 overflow-y-auto space-y-4 mb-4 px-2 scroll-smooth">
@@ -18,27 +18,36 @@
       </div>
     </div>
 
-    <form @submit.prevent="sendMessage" class="flex gap-2">
-      <input
+    <form @submit.prevent="sendMessage">
+      <textarea
         v-model="input"
         type="text"
         placeholder="Ask me anything..."
-        class="flex-1 px-4 py-2 rounded-lg border dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white focus:outline-none"
+        class="w-full px-4 py-2 rounded-lg border dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white focus:outline-none"
         required
-      />
-      <button
-        type="submit"
-        :disabled="loading"
-        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
-      >
-        {{ loading ? 'Sending...' : 'Send' }}
-      </button>
+        ></textarea>
+      <div class="flex gap-2 justify-end">
+          <RouterLink
+                  :to="{ name: 'ebooks'}"
+                  type="submit"
+                  class="px-6 py-2 bg-black text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                  >
+                  Explore Resources
+          </RouterLink>
+          <button
+                  type="submit"
+                  :disabled="loading"
+                  class="px-6 py-2 bg-black text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                  >
+                  {{ loading ? 'Sending...' : 'Send' }}
+          </button>
+      </div>
     </form>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+    import { ref, onMounted, watch } from 'vue'
 import axios from 'axios'
 
 const input = ref('')
@@ -98,11 +107,11 @@ watch(messages, () => {
 <style scoped>
 /* Optional: customize scroll bar */
 ::-webkit-scrollbar {
-  width: 6px;
+    width: 6px;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(100, 116, 139, 0.5);
-  border-radius: 3px;
+    background: rgba(100, 116, 139, 0.5);
+    border-radius: 3px;
 }
 </style>
 

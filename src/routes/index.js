@@ -29,6 +29,16 @@ const routes = [
                 name: 'todo',
                 component: () => import('../pages/dashboard/TodoPage.vue'),
             },
+            {
+                path: 'ebooks',
+                name: 'ebooks',
+                component: () => import('../pages/dashboard/EbookPage.vue'),
+            },
+            {
+                path: 'quiz',
+                name: 'quiz',
+                component: () => import('../pages/dashboard/QuizPage.vue'),
+            },
         ]
     },
     {
@@ -38,7 +48,7 @@ const routes = [
             {
                 path: '',
                 name: 'home',
-                component: () => import('../pages/HomePage.vue'),
+                component: () => import('../pages/LandingPage.vue'),
             },
             {
                 path: 'login',
@@ -49,6 +59,11 @@ const routes = [
                 path: 'signup',
                 name: 'signup',
                 component: () => import('../pages/SignupPage.vue'),
+            },
+            {
+                path: 'success',
+                name: 'success',
+                component: () => import('../pages/AccountSuccess.vue'),
             },
         ]
     }

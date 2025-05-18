@@ -1,15 +1,15 @@
 <template>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6">
-        <TaskCard />
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6">
+        <EbookRecommender />
         <SuggestionCard />
-        <QuizCard />
+        <QuizCard class="lg:col-span-2" />
     </div>
 </template>
 
 <script setup>
 import QuizCard from '../../components/QuizCard.vue'
 import SuggestionCard from '../../components/SuggestionCard.vue'
-import TaskCard from '../../components/TaskCard.vue'
+import EbookRecommender from '../../components/EbookRecommender.vue'
 </script>
 
 <style scoped>
