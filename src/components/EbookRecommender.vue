@@ -1,24 +1,7 @@
 <template>
   <div class="p-6 max-w-3xl mx-auto text-center">
-    <!-- SVG Illustration -->
-    <div class="mb-6">
-      <svg
-        class="mx-auto w-32 h-32 text-blue-500"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.5"
-          d="M12 3v18m9-9H3m16.5 0a7.5 7.5 0 01-15 0 7.5 7.5 0 0115 0z"
-        />
-      </svg>
-    </div>
-
     <!-- Header and Input -->
-    <h1 class="text-3xl font-bold mb-4">AI-Powered Ebook Recommender</h1>
+    <h1 class="text-2xl font-bold mb-4"><i class="ri-quill-pen-ai-fill"></i>AI-Powered Ebook Recommender</h1>
 
     <input
       v-model="prompt"
@@ -31,47 +14,66 @@
       @click="getRecommendations"
       class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
     >
-      🔍 Generate Recommendations
+      <i class="ri-search-eye-line"></i>Generate Recommendations
     </button>
-
-    <!-- States -->
-    <div v-if="loading" class="mt-4 text-gray-600">Loading...</div>
-    <div v-if="error" class="mt-4 text-red-600">{{ error }}</div>
-
-    <!-- Cards -->
-    <div class="mt-8 space-y-6 text-left" v-if="cards.length">
-      <div
-        v-for="(card, index) in cards"
-        :key="index"
-        class="border p-5 rounded shadow hover:shadow-md transition bg-white"
-      >
-        <h2 class="text-xl font-semibold text-blue-800 mb-2">{{ card.title }}</h2>
-        <p class="text-gray-700 mb-2">
-          {{ expanded[index] ? card.description : truncate(card.description) }}
-        </p>
-        <button
-          class="text-sm text-blue-500 hover:underline"
-          @click="toggleExpanded(index)"
-        >
-          {{ expanded[index] ? 'See less' : 'See more' }}
-        </button>
-        <div class="mt-3">
-          <a
-            :href="card.link"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200 transition text-sm"
-          >
-            📥 Search & Download
-          </a>
+        <div class="mt-2">
+            <span>Popular Tags:</span>
+            <div class="flex gap-2 flex-wrap justify-center">
+                <button v-for="genre in genres" @click="prompt = genre" class="p-2 bg-gray-500 rounded text-white">{{ genre }}</button>
+            </div>
         </div>
-      </div>
-    </div>
+
+        <!-- States -->
+        <div v-if="loading" class="mt-4 text-gray-600">Loading...</div>
+        <div v-if="error" class="mt-4 text-red-600">{{ error }}</div>
+
+        <!-- Cards -->
+        <div class="mt-8 space-y-6 border-t-2 col-span-2 pt-2 text-left" v-if="cards.length">
+            <div class="text-xl font-bold">Recommended Ebooks:</div>
+            <div
+                    v-for="(card, index) in cards"
+                    :key="index"
+                    class="border p-5 rounded shadow hover:shadow-md transition bg-white"
+                    >
+                    <h2 class="text-xl font-semibold text-blue-800 mb-2">{{ card.title }}</h2>
+                    <p class="text-gray-700 mb-2">
+                    {{ expanded[index] ? card.description : truncate(card.description) }}
+                    </p>
+                    <button
+                            class="text-sm text-blue-500 hover:underline"
+                            @click="toggleExpanded(index)"
+                            >
+                            {{ expanded[index] ? 'See less' : 'See more' }}
+                    </button>
+                        <div class="mt-3">
+                            <a
+                                    :href="card.link"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200 transition text-sm"
+                                    >
+                                    📥 Search & Download
+                            </a>
+                        </div>
+            </div>
+        </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+    import { ref } from 'vue';
+
+const genres = [
+    'Romance',
+    'Fantasy',
+    'Strategy',
+    'science',
+    'Politics',
+    'Technology',
+    'AI',
+    'Programming',
+]
+
 
 const prompt = ref('');
 const cards = ref([]);
@@ -113,7 +115,7 @@ const url = import.meta.env.VITE_API_URL
       throw new Error(data.error || 'API Error');
     }
 
-    cards.value = data.cards;
+    cards.value = data.cards.slice(0,3);
     expanded.value = data.cards.map(() => false);
   } catch (err) {
     error.value = err.message;

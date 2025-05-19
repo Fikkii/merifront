@@ -1,20 +1,8 @@
 <template>
   <div class="bg-white h-full w-full shadow-lg rounded-xl p-6 max-w-md mx-auto">
     <!-- Header with checklist SVG -->
-    <h2 class="text-2xl font-bold text-indigo-700 mb-6 flex items-center justify-center gap-2">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="w-8 h-8"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        stroke-width="2"
-        aria-hidden="true"
-        focusable="false"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4" />
-      </svg>
-      Study To-Do List
+    <h2 class="text-sm font-bold border-b-2 text-green-700 mb-6 flex items-center justify-center gap-2">
+      <i class="ri-list-check-3"></i>ToDo
     </h2>
 
     <!-- Input and Add button -->
@@ -23,7 +11,7 @@
         v-model="newTask"
         type="text"
         placeholder="Add a new task..."
-        class="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300 transition"
+        class="border w-full rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-300 transition"
         @keydown.enter="addTask"
         aria-label="New task input"
       />
@@ -32,19 +20,7 @@
         class="mt-2 ms-auto bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center justify-center"
         aria-label="Add task"
       >
-        <!-- Plus icon -->
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="w-6 h-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          stroke-width="2"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-        </svg>
+      <i class="ri-add-line"></i>Add Task
       </button>
     </div>
 

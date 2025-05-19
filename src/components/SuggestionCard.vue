@@ -1,5 +1,11 @@
 <script setup>
     import { ref, onMounted } from 'vue';
+defineProps({
+    inline: {
+        type: Boolean,
+        default: false
+    }
+})
 
 const topics = ref([]);
 const loading = ref(false);
@@ -23,6 +29,14 @@ const fetchTopics = async () => {
   }
 };
 
+async function copyToClipboard(topic){
+    try{
+        await navigator.clipboard.writeText(topic)
+    }catch(e){
+        console.log(e)
+    }
+}
+
 onMounted(() => {
   fetchTopics();
   console.log(topics)
@@ -37,8 +51,8 @@ onMounted(() => {
     <div v-else class="bg-white p-4 rounded-xl shadow-sm">
         <h3 class="text-lg font-semibold mb-2">Suggested Topics</h3>
         <div v-for="topic in topics">
-            <div class="text-sm grid gap-3 text-gray-700">
-                <div class="border p-5 py-8 rounded border-[3px] border-blue-200 shadow-lg">{{ topic }}</div>
+            <div class="text-sm text-gray-700">
+                <div @click="copyToClipboard(topic)" class="p-2 mt-2 rounded shadow-lg">{{ topic }}</div>
             </div>
         </div>
     </div>

@@ -1,7 +1,8 @@
 <template>
   <div class="flex flex-col h-[500px] bg-white dark:bg-gray-900 rounded-xl shadow p-4">
-    <div class="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-100">🤖 AI Study Buddy</div>
-
+    <div class="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-100">Chat with AI
+    <div class="text-sm">Powered by Gemini</div></div>
+    <SuggestionCard @click="handleSuggestion" v-if="suggestion"/>
     <div ref="chatContainer" class="flex-1 overflow-y-auto space-y-4 mb-4 px-2 scroll-smooth">
       <div
         v-for="(msg, index) in messages"
@@ -30,7 +31,7 @@
           <RouterLink
                   :to="{ name: 'ebooks'}"
                   type="submit"
-                  class="px-6 py-2 bg-black text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                  class="px-6 py-2 text-blue-500 rounded-lg hover:bg-blue-700 disabled:opacity-50"
                   >
                   Explore Resources
           </RouterLink>
@@ -47,12 +48,20 @@
 </template>
 
 <script setup>
+    import SuggestionCard from './SuggestionCard.vue'
     import { ref, onMounted, watch } from 'vue'
 import axios from 'axios'
+
+async function handleSuggestion(){
+    const text = await navigator.clipboard.readText()
+    input.value = text
+    console.log(text)
+}
 
 const input = ref('')
 const messages = ref([])
 const loading = ref(false)
+const suggestion = ref(true)
 const chatContainer = ref(null)
 
 const url = import.meta.env.VITE_API_URL 
@@ -62,6 +71,7 @@ const token = localStorage.getItem('token') || ''
 
 const sendMessage = async () => {
   if (!input.value.trim()) return
+  suggestion.value = false
 
   const newMsg = { role: 'user', content: input.value.trim() }
   messages.value.push(newMsg)
