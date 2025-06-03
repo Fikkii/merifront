@@ -6,11 +6,20 @@ const routes = [
         path: '/dashboard',
         component: () => import('../layouts/DashboardLayout.vue'),
         meta: { requiresAuth: true },
-        beforeEnter: ( to, from ) => {
+        beforeEnter: async ( to, from ) => {
+            const url = import.meta.env.VITE_API_URL
             const token = localStorage.getItem('jwt-token') || null
+            const role = localStorage.getItem('user-role') || null
+
+            //set backend api
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+            axios.defaults.baseURL = url
+
             if( !token ){
                 return { name: 'login' }
+            }
+            if(role == 'admin'){
+                return { name: 'admin-home' }
             }
         },
         children: [
@@ -30,9 +39,76 @@ const routes = [
                 component: () => import('../pages/dashboard/EbookPage.vue'),
             },
             {
-                path: 'about',
-                name: 'about',
-                component: () => import('../pages/dashboard/AboutPage.vue'),
+                path: 'profile',
+                name: 'profile',
+                component: () => import('../pages/dashboard/ProfilePage.vue'),
+            },
+            {
+                path: 'topic/:id',
+                name: 'topic',
+                props: true,
+                component: () => import('../pages/dashboard/TopicPage.vue'),
+            },
+            {
+                path: 'learning',
+                name: 'learning',
+                component: () => import('../pages/dashboard/LearningPage.vue'),
+            },
+        ]
+    },
+    {
+        path: '/admin',
+        component: () => import('../layouts/AdminLayout.vue'),
+        beforeEnter: ( to, from ) => {
+            const url = import.meta.env.VITE_API_URL
+            const token = localStorage.getItem('jwt-token') || null
+            const user = localStorage.getItem('user') || null
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+            axios.defaults.baseURL = url
+            if( !token ){
+                return { name: 'login' }
+            }
+        },
+        children: [
+            {
+                path: '',
+                name: 'admin-home',
+                component: () => import('../pages/admin/HomePage.vue'),
+            },
+            {
+                path: 'course',
+                name: 'admin-courses',
+                component: () => import('../pages/admin/CoursePage.vue'),
+            },
+            {
+                path: 'module',
+                name: 'admin-modules',
+                component: () => import('../pages/admin/ModulePage.vue'),
+            },
+            {
+                path: 'topic',
+                name: 'admin-topics',
+                component: () => import('../pages/admin/TopicPage.vue'),
+            },
+            {
+                path: 'student',
+                name: 'admin-students',
+                component: () => import('../pages/admin/StudentPage.vue'),
+            },
+            {
+                path: 'broadcast',
+                name: 'admin-broadcasts',
+                component: () => import('../pages/admin/BroadcastPage.vue'),
+            },
+            {
+                path: 'transaction',
+                name: 'admin-transactions',
+                component: () => import('../pages/admin/TransactionPage.vue'),
+            },
+            {
+                path: 'project',
+                name: 'admin-projects',
+                component: () => import('../pages/admin/ProjectPage.vue'),
             },
         ]
     },
@@ -51,14 +127,21 @@ const routes = [
                 component: () => import('../pages/LoginPage.vue'),
             },
             {
-                path: 'signup',
-                name: 'signup',
-                component: () => import('../pages/SignupPage.vue'),
-            },
-            {
-                path: 'success',
-                name: 'success',
-                component: () => import('../pages/AccountSuccess.vue'),
+                path: 'reset-password',
+                children: [
+                    {
+                        path: '',
+                        props: true,
+                        name: 'reset-password-email',
+                        component: () => import('../pages/PasswordResetPage.vue'),
+                    },
+                    {
+                        path: ':token',
+                        props: true,
+                        name: 'reset-password-token',
+                        component: () => import('../pages/PasswordResetPage.vue'),
+                    },
+                ]
             },
         ]
     }

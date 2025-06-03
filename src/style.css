@@ -1,5 +1,9 @@
 @import "tailwindcss";
 @import 'remixicon/fonts/remixicon.css';
+@import 'vue-toastification/dist/index.css';
+@import 'highlight.js/styles/default.css';
+  
+@plugin "@tailwindcss/typography";
 
 body {
     font-size: 12px;

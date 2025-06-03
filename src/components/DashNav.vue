@@ -7,7 +7,6 @@ const sidebarOpen = ref(true)
 const toggleSidebar = () => {
   sidebarOpen.value = !sidebarOpen.value
 }
-
 </script>
 
 <template>
@@ -15,8 +14,9 @@ const toggleSidebar = () => {
             :class="['fixed top-0 left-0 h-full transition-all duration-300 bg-white shadow-lg z-30', sidebarOpen ? 'w-64' : 'w-16']"
             class="p-1"
             >
+            <button @click="toggleSidebar" :class="[sidebarOpen == false ? 'hidden' : '']" class="z-[-1] md:hidden w-screen absolute h-full top-0 left-0"></button>
             <div class="flex justify-between items-center mb-6">
-                <h1 v-if="sidebarOpen" class="text-2xl font-bold text-blue-600">Welcome</h1>
+                <h1 v-if="sidebarOpen" class="text-2xl flex items-center font-bold text-blue-600"><img width="65" src="../assets/logo.png">Welcome</h1>
                 <button @click="toggleSidebar" class="text-gray-500 md:hidden hover:text-blue-600">
                     <span v-if="sidebarOpen">
                         <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -35,6 +35,10 @@ const toggleSidebar = () => {
                 <span><i class="ri-home-2-line text-2xl"></i></span>
                 <span v-if="sidebarOpen">Home</span>
                 </RouterLink>
+                <RouterLink :to="{ name: 'learning' }" class="w-full flex items-center gap-2 p-2 justify-center md:justify-start  rounded hover:bg-blue-50">
+                <span><i class="ri-keyboard-line text-2xl"></i ></span>
+                <span v-if="sidebarOpen">Learning Path</span>
+                </RouterLink>
                 <RouterLink :to="{ name: 'chat' }" class="w-full flex items-center gap-2 p-2 justify-center md:justify-start  rounded hover:bg-blue-50">
                 <span><i class="ri-quill-pen-ai-line text-2xl"></i ></span>
                 <span v-if="sidebarOpen">Ask AI</span>
@@ -43,9 +47,9 @@ const toggleSidebar = () => {
                 <span><i class="ri-git-repository-line text-2xl"></i></span>
                 <span v-if="sidebarOpen">Ebook</span>
                 </RouterLink>
-                <RouterLink :to="{ name: 'about' }" class="w-full flex items-center gap-2 p-2 justify-center md:justify-start  rounded hover:bg-blue-50">
-                <span><i class="ri-information-line text-2xl"></i></span>
-                <span v-if="sidebarOpen">Info</span>
+                <RouterLink :to="{ name: 'profile' }" class="w-full flex items-center gap-2 p-2 justify-center md:justify-start  rounded hover:bg-blue-50">
+                <span><i class="ri-file-user-line text-2xl"></i></span>
+                <span v-if="sidebarOpen">Profile</span>
                 </RouterLink>
             </nav>
     </aside>

@@ -9,16 +9,25 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@paystack/inline-js": "^2.22.4",
     "@tailwindcss/vite": "^4.1.7",
+    "@toast-ui/editor": "^3.2.2",
+    "@toast-ui/editor-plugin-code-syntax-highlight": "^3.1.0",
     "axios": "^1.9.0",
     "express": "^5.1.0",
+    "highlight.js": "^11.11.1",
+    "juice": "^11.0.1",
+    "marked": "^15.0.12",
     "pinia": "^3.0.2",
+    "prismjs": "^1.30.0",
     "remixicon": "^4.6.0",
     "tailwindcss": "^4.1.7",
     "vue": "^3.5.13",
-    "vue-router": "^4.5.1"
+    "vue-router": "^4.5.1",
+    "vue-toastification": "^2.0.0-rc.5"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.16",
     "@vitejs/plugin-vue": "^5.2.3",
     "vite": "^6.3.5"
   }

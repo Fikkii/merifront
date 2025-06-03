@@ -1,4 +1,5 @@
 <script setup>
+    import axios from 'axios'
     import { ref, onMounted } from 'vue';
 defineProps({
     inline: {
@@ -17,11 +18,10 @@ const fetchTopics = async () => {
   loading.value = true;
   error.value = '';
   try {
-    const res = await fetch(`${url}/api/ebooks/topics`);
-    if (!res.ok) throw new Error('Failed to fetch topics');
-    const data = await res.json();
-    console.log(data)
-    topics.value = data.cards || [];
+    const res = await axios.get(`/api/ebooks/topics`);
+    if (!res.status == 200) throw new Error('Failed to fetch topics');
+    const data = await res.data;
+    topics.value = data.cards.splice(0,3) || [];
   } catch (err) {
     error.value = err.message;
   } finally {

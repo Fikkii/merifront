@@ -32,12 +32,27 @@ function handleLogout(){
                     </span>
                     <button @click="handleLogout">Logout</button>
                 </div>
-                <RouterView class="mt-15"></RouterView>
+                <div class="mt-15">
+                    <h2 class="text-indigo-500 font-bold mb-2 border-b-1">Quick Bar</h2>
+                    <div class="flex gap-2 py-1 px-2 mb-2 pb-5 border-b-2 overflow-x-auto">
+                        <RouterLink class="px-2 py-1 shadow-lg border border-gray-500 bg-white rounded" :to="{ name: 'chat' }">Gemini AI</RouterLink>
+                        <RouterLink class="px-2 py-1 shadow-lg border border-gray-500 bg-white rounded" :to="{ name: 'learning' }">Modules</RouterLink>
+                        <RouterLink class="px-2 py-1 shadow-lg border border-gray-500 bg-white rounded" :to="{ name: 'ebooks' }">Topics</RouterLink>
+                        <RouterLink class="px-2 py-1 shadow-lg border border-gray-500 bg-white rounded" :to="{ name: 'profile' }">Profile</RouterLink>
+                    </div>
+                </div>
+                <div>
+                    <RouterView></RouterView>
+                </div>
         </main>
     </div>
 </template>
 
 <style scoped>
-
+.router-link-active{
+    background-color: blue;
+    color: white;
+    border: none;
+}
 </style>
 

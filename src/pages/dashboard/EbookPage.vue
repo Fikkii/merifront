@@ -1,6 +1,7 @@
 <script setup>
     import EbookRecommender from '../../components/EbookRecommender.vue'
     import { ref, onMounted, watch } from 'vue'
+    import axios from 'axios'
 
 const prompt = ref('programming');
 const loading = ref(false);
@@ -51,15 +52,12 @@ const getRecommendations = async (genre) => {
 const url = import.meta.env.VITE_API_URL 
 
   try {
-    const res = await fetch(`${url}/api/ebooks/recommendations`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: aiprompt }),
-    });
+    const res = await axios.post(`/api/ebooks/recommendations`, { prompt: aiprompt }
+    );
 
-    const data = await res.json();
+    const data = await res.data;
 
-    if (!res.ok) {
+    if (!res.status == 200) {
       throw new Error(data.error || 'API Error');
     }
 
@@ -80,17 +78,10 @@ const url = import.meta.env.VITE_API_URL
         <div class="flex items-center gap-2">
             <input
                     v-model="prompt"
-                    @keydown.enter="getRecommendations"
+                    @keydown.enter.prevent.stop
                     class="border border-gray-300 rounded px-4 py-2 w-full focus:ring focus:border-blue-400"
                     placeholder="Enter a topic (e.g. 'Machine Learning')"
                     />
-
-            <button
-                    @click="getRecommendations"
-                    class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition"
-                    >
-                    Search
-            </button>
         </div>
 
     </div>
@@ -100,7 +91,7 @@ const url = import.meta.env.VITE_API_URL
     </div>
 
     <!-- States -->
-    <div v-if="loading" class="mt-4 text-gray-600">Loading...</div>
+    <div v-if="loading" class="mt-4 text-gray-600"><img src="../../assets/loader.gif" width=20 />Loading...</img></div>
     <div v-if="error" class="mt-4 text-red-600">{{ error }}</div>
 
     <!-- Cards -->
@@ -131,7 +122,7 @@ const url = import.meta.env.VITE_API_URL
                 </a>
             </div>
         </div>
-        <button class="bg-blue-500 p-3 text-white rounded block ms-auto">See more</button>
+        <button @click="getRecommendations" class="bg-blue-500 p-3 text-white rounded block ms-auto">See more</button>
     </div>
 
 </template>

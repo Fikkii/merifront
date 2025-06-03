@@ -126,7 +126,7 @@ const addTask = async () => {
   if (!text) return
 
   try {
-    const res = await axios.post(`${url}/api/todos`, { text })
+    const res = await axios.post(`/api/todos`, { text })
     tasks.value.push(res.data)
     newTask.value = ''
   } catch (err) {

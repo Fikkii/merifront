@@ -24,7 +24,7 @@
         </div>
 
         <!-- States -->
-        <div v-if="loading" class="mt-4 text-gray-600">Loading...</div>
+        <div v-if="loading" class="flex gap-2 mt-4 text-gray-600"><img src="../assets/loader.gif" width="20" />Loading...</div>
         <div v-if="error" class="mt-4 text-red-600">{{ error }}</div>
 
         <!-- Cards -->
@@ -62,6 +62,7 @@
 
 <script setup>
     import { ref } from 'vue';
+    import axios from 'axios'
 
 const genres = [
     'Romance',
@@ -100,20 +101,17 @@ const getRecommendations = async () => {
   cards.value = [];
   expanded.value = [];
 
-const url = import.meta.env.VITE_API_URL 
-
   try {
-    const res = await fetch(`${url}/api/ebooks/recommendations`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: prompt.value }),
-    });
+    const res = await axios.post(`/api/ebooks/recommendations`, {
+        prompt: prompt.value
+      });
 
-    const data = await res.json();
+      const data = await res.data;
 
-    if (!res.ok) {
-      throw new Error(data.error || 'API Error');
-    }
+      if (res.status !== 200) {
+        throw new Error(data.error || 'API Error');
+      }
+
 
     cards.value = data.cards.slice(0,3);
     expanded.value = data.cards.map(() => false);

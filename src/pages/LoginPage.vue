@@ -1,17 +1,113 @@
+<script setup>
+    import { ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useToast } from 'vue-toastification'
+
+import GoogleSigninButton from '../components/GoogleSigninButton.vue'
+
+const toast = useToast()
+
+const email = ref('')
+const password = ref('')
+const confirmPassword = ref('')
+const showPassword = ref(false)
+const rememberMe = ref(false)
+
+const isLoading = ref(false)
+
+const showSignup = ref(false)
+
+const router = useRouter()
+
+function handleGoogleOauth(data){
+    if(data.token){
+      localStorage.setItem('jwt-token', data.token);
+      localStorage.setItem('user-role', data.user.role);
+      toast.success('Login Successfull.')
+      router.push({ name: 'dashboard-home' })
+    }else{
+      toast.error('Unable to login')
+    }
+}
+
+async function handleSignup() {
+  try {
+    if ( password.value != confirmPassword.value ){
+        throw new Error('password does not match...')
+    }
+
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: email.value,
+        password: password.value
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      localStorage.setItem('jwt-token', data.token);
+      toast.success('Account has been created successfully')
+      showSignup.value = false
+      isLoading.value = false
+    }else{
+        throw new Error(data.error)
+    } 
+  } catch (e) {
+      isLoading.value = false
+    toast.error(e.message)
+  }
+}
+
+function handleSubmit(e){
+    if(showSignup.value){
+        handleSignup()
+    }else{
+        handleLogin()
+    }
+}
+
+async function handleLogin() {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: email.value,
+        password: password.value
+      })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      localStorage.setItem('jwt-token', data.token);
+      localStorage.setItem('user-role', data.user.role);
+      toast.success('Login Successfull.')
+      router.push({ name: 'dashboard-home' })
+    }else {
+      throw new Error(data.error)
+    }
+  } catch (e) {
+    isLoading.value = false
+    toast.error(e.message)
+  }
+}
+</script>
 <template>
-    <div v-if="error" class="bg-red-500 p-4 m-5 text-white absolute w-[300px] top-0 right-0 rounded shadow">
-        {{ error }}
-    </div>
   <div class="flex h-screen bg-white">
     <!-- Left Section: Login Form -->
     <div class="w-full md:w-1/2 flex items-center justify-center p-8">
-      <div class="w-full max-w-md space-y-6">
+      <div class="w-full max-w-md space-y-3">
+          <img src="../assets/logo.png" width=65 alt="logo"/>
           <div>
               <div class="text-2xl">{{ showSignup ? 'Signup' : 'Login' }} To Continue</div>
-              <span class="text-gray-500">Please provide the following details to continue</span>
           </div>
           <!-- Login Form -->
           <form @submit.prevent="e => handleSubmit(e)" class="space-y-4 bg-blue-50 border-blue-500 p-6 rounded-lg shadow-2xl relative">
+              <GoogleSigninButton @success="handleGoogleOauth" />
               <div>
                   <label class="block mb-1 text-gray-700">Enter your email address</label>
                   <input
@@ -36,8 +132,8 @@
                               @click="showPassword = !showPassword"
                               class="absolute inset-y-0 right-3 flex items-center text-gray-600"
                               >
-                              <span v-if="showPassword"> </span>
-                              <span v-else> </span>
+                              <span v-if="showPassword"><i class="ri-eye-close-line"></i> </span>
+                              <span v-else><i class="ri-eye-line"></i> </span>
                       </button>
                   </div>
               </div>
@@ -46,6 +142,7 @@
                   <label class="block mb-1 text-gray-700">Confirm your password</label>
                   <div class="relative">
                       <input
+                              type="password"
                               v-model="confirmPassword"
                               required
                               class="w-full px-4 py-2 border rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -61,7 +158,7 @@
                   </div>
               </div>
 
-              <a href="#" class="text-blue-600 float-right hover:underline">Forgot password?</a>
+              <RouterLink :to="{ name: 'reset-password-email' }" href="#" class="text-blue-600 float-right hover:underline">Forgot password?</RouterLink>
 
               <button
                       type="submit"
@@ -88,99 +185,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-    import { ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
-
-const email = ref('')
-const password = ref('')
-const confirmPassword = ref('')
-const showPassword = ref(false)
-const rememberMe = ref(false)
-
-const showSignup = ref(false)
-
-const isLoading = ref(false)
-const error = ref('')
-
-watch(error, ()=> {
-    console.log('There is an error')
-    setTimeout(() => {
-        error.value = ''
-    }, 5000)
-})
-
-const router = useRouter()
-
-async function handleSignup() {
-  isLoading.value = true
-  try {
-    if ( password.value != confirmPassword.value ){
-        throw new Error('password does not match...')
-    }
-
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: email.value,
-        password: password.value
-      }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      localStorage.setItem('jwt-token', data.token);
-      router.push({ name: 'success' })
-    }else{
-        throw new Error(data.error)
-    } 
-  } catch (e) {
-    isLoading.value = false
-    error.value = e
-    console.error('Caught error:', e);
-  }
-}
-
-function handleSubmit(e){
-    console.log(e)
-
-    if(showSignup.value){
-        handleSignup()
-    }else{
-        handleLogin()
-    }
-}
-
-async function handleLogin() {
-  isLoading.value = true
-  try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: email.value,
-        password: password.value
-      })
-    });
-
-    const data = await response.json();
-
-    console.log('Response status:', response.status);
-    console.log('Response data:', data);
-
-    if (response.ok) {
-      localStorage.setItem('jwt-token', data.token);
-      router.push({ name: 'dashboard-home' })
-    }else {
-      throw new Error(data.error)
-    }
-  } catch (e) {
-    isLoading.value = false
-    error.value = e
-    console.error('Caught error:', e);
-  }
-}
-</script>
