@@ -1,5 +1,5 @@
 <script setup>
-    import AdminForm from './AdminForm.vue'
+    import Modal from '../../components/admin/Modal.vue'
     import { ref, onMounted } from 'vue'
     import { useToast } from 'vue-toastification'
 
@@ -75,8 +75,8 @@ function formClose(){
     <div>
         <div>
             <!-- shared admin form -->
-            <AdminForm v-if="toggler" :fields="fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
-            </AdminForm>
+            <Modal v-if="toggler" :fields="fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
+            </Modal>
         </div>
         <div :class="[toggler ? 'blur' : '']">
             <div>

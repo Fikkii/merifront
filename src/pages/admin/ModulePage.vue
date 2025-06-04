@@ -1,6 +1,5 @@
 <script setup>
-    import Card from '../../components/admin/Card.vue'
-    import AdminForm from './AdminForm.vue'
+    import Modal from '../../components/admin/Modal.vue'
     import { ref, onMounted } from 'vue'
     import { useToast } from 'vue-toastification'
 
@@ -106,13 +105,13 @@ function formClose(){
 <template>
     <div>
         <div>
-            <AdminForm v-if="toggler" :fields="fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
+            <Modal v-if="toggler" :fields="fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
             <div class="mt-3">
                 <select v-model="courseId" class="p-2 border">
                     <option v-for="course in availableCourse" :value="course.id">{{ course.title }}</option>
                 </select>
             </div>
-            </AdminForm>
+            </Modal>
 
         </div>
         <div :class="[toggler ? 'blur' : '']">

@@ -4,7 +4,8 @@
     import { marked } from 'marked'
     import juice from 'juice'
 
-import AdminForm from './AdminForm.vue'
+import Modal from '../../components/admin/Modal.vue'
+
     import axios from 'axios'
     import { useToast } from 'vue-toastification'
 
@@ -128,12 +129,12 @@ fields.value[index].res = value
 <template>
     <div>
             <div>
-                <AdminForm v-if="toggler" :fields="fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
+                <Modal v-if="toggler" :fields="fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
                     <!-- The markdown editor stays here -->
                     <div class="col-span-2">
                         <ToastEditor ref="toastRef" />
                     </div>
-                </AdminForm>
+                </Modal>
             </div>
         <div :class="[toggler ? 'blur' : '']">
             <div>

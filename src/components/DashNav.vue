@@ -51,6 +51,10 @@ const toggleSidebar = () => {
                 <span><i class="ri-file-user-line text-2xl"></i></span>
                 <span v-if="sidebarOpen">Profile</span>
                 </RouterLink>
+                <RouterLink :to="{ name: 'admin-home' }" class="w-full flex items-center gap-2 p-2 justify-center md:justify-start  rounded hover:bg-blue-50">
+                <span><i class="ri-admin-fill text-3xl"></i></span>
+                <span v-if="sidebarOpen">Admin</span>
+                </RouterLink>
             </nav>
     </aside>
 </template>

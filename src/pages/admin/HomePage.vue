@@ -1,5 +1,9 @@
 <script setup>
-    import Card from '../../components/admin/Card.vue'
+    import StatsCard from '../../components/admin/StatsCard.vue'
+    import QuickActions from '../../components/admin/QuickActions.vue'
+    import Activity from '../../components/admin/Activity.vue'
+    import TopCourses from '../../components/admin/TopCourses.vue'
+    import Modal from '../../components/admin/Modal.vue'
     import { ref, onMounted } from 'vue'
 
     import CoursePage from './CoursePage.vue'
@@ -57,17 +61,11 @@ async function fetchTopics() {
 </script>
 
 <template>
-    <div class="grid gap-3 md:grid-cols-3">
-        <Card link="admin-course" name="Total course" :total="totalCourse" />
-        <Card name="Total Modules" :total="totalModules" />
-        <Card name="Total Topics" :total="totalTopics" />
-    </div>
-    <div class="grid mt-5 gap-3">
-        <h2 class="font-bold text-indigo-500 text-xl">Available Courses</h2>
-        <CoursePage class="mt-[-40px]" dashboard />
-    </div>
-    <div class="grid mt-5 gap-3">
-        <h2 class="font-bold text-indigo-500 text-xl">Instructors</h2>
+    <StatsCard />
+    <QuickActions />
+    <div class="flex flex-col md:flex-row gap-8">
+        <Activity class="flex-1" />
+        <TopCourses  class="flex-1"/>
     </div>
 </template>
 

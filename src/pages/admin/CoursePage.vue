@@ -1,5 +1,5 @@
 <script setup>
-    import AdminForm from './AdminForm.vue'
+    import Modal from '../../components/admin/Modal.vue'
     import { ref, onMounted } from 'vue'
 
     const props = defineProps({
@@ -73,21 +73,12 @@ function formClose(){
 <template>
     <div>
         <div>
-            <AdminForm v-if="toggler" :fields="fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
-            </AdminForm>
+            <Modal v-if="toggler" :fields="fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
+            </Modal>
         </div>
         <div :class="[toggler ? 'blur' : '']">
-            <div v-if="!props.dashboard">
+            <div class="mb-4" v-if="!props.dashboard">
                 <button @click="toggler = !toggler" class="bg-blue-500 py-2 text-white block col-start-2 ms-auto w-[200px] rounded">Add course</button>
-                <div class="flex gap-2 mt-4">
-                    <input class="px-4 py-2 rounded-sm flex-1" placeholder="Enter Course Title" type="text"/>
-                    <button class="px-4 py-2 bg-yellow-500 text-white rounded">Search</button>
-                </div>
-                <select class="px-4 py-2 mt-2 border rounded-sm">
-                    <option>Latest</option>
-                    <option>Active</option>
-                    <option>Inactive</option>
-                </select>
             </div>
             <Table :items="availableCourse"/>
         </div>

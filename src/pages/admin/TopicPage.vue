@@ -1,5 +1,5 @@
 <script setup>
-    import AdminForm from './AdminForm.vue'
+    import Modal from '../../components/admin/Modal.vue'
     import ToastEditor from '../../components/ToastEditor.vue'
     import { ref, onMounted } from 'vue'
 
@@ -107,8 +107,8 @@ function formClose(){
 
 <template>
     <div class="relative">
-        <div class="w-screen">
-            <AdminForm v-if="toggler" :fields="fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
+        <div>
+            <Modal v-if="toggler" :fields="fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
             <div class="mt-3">
                 <select v-model="moduleId" class="p-2 border">
                     <option v-for="module in availableModules" :value="module.id">{{ module.module_title }}</option>
@@ -118,7 +118,7 @@ function formClose(){
             <div class="col-span-2">
                 <ToastEditor ref="toastRef" />
             </div>
-            </AdminForm>
+            </Modal>
         </div>
         <div :class="[toggler ? 'blur' : '']">
             <div>

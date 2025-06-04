@@ -1,6 +1,5 @@
 <script setup>
-    import Card from '../../components/admin/Card.vue'
-    import AdminForm from './AdminForm.vue'
+    import Modal from '../../components/admin/Modal.vue'
     import { ref, onMounted } from 'vue'
 
     import axios from 'axios'
@@ -89,7 +88,7 @@ function handleDropdown(id){
 <template>
     <div>
         <div>
-            <AdminForm v-if="toggler" :fields="fields" @update="updateField" @close="formClose"  @submit="formSubmit" ></AdminForm>
+            <Modal v-if="toggler" :fields="fields" @update="updateField" @close="formClose"  @submit="formSubmit" ></Modal>
             
         </div>
         <div :class="[toggler ? 'blur' : '']">
