@@ -10,6 +10,11 @@
     const allProject = ref([])
     const toggler = ref( false )
 
+    const moduleId = ref([])
+
+    const availableModules = ref([])
+
+    onMounted(() => { fetchModules() })
 
     const fields = ref([
     {
@@ -40,8 +45,7 @@ async function fetchProjects() {
   }
 }
 
-function handleDelete(e){
-    const id = e.currentTarget.id
+function handleDelete(id){
     const res = axios.delete(`/api/admin/projects/${id}`)
     fetchProjects()
 }
@@ -50,9 +54,24 @@ function updateField(index, value){
 fields.value[index].res = value
 }
 
+async function fetchModules() {
+  try {
+    const res = await axios.get('/api/modules')
+
+    if (res.status == 200) {
+        const data = res.data
+        availableModules.value = data
+    }
+  } catch (e) {
+    console.error('Caught error:', e);
+  }
+}
+
+
 async function formSubmit(){
 try{
     const res = axios.post('/api/admin/projects', {
+        moduleId: moduleId.value,
         title: fields.value[0].res,
         instructions: fields.value[1].res,
     })
@@ -76,6 +95,11 @@ function formClose(){
         <div>
             <!-- shared admin form -->
             <Modal v-if="toggler" :fields="fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
+                <div class="mt-3">
+                    <select v-model="moduleId" class="p-2 border">
+                        <option v-for="module in availableModules" :value="module.id">{{ module.module_title }}</option>
+                    </select>
+                </div>
             </Modal>
         </div>
         <div :class="[toggler ? 'blur' : '']">
@@ -91,7 +115,7 @@ function formClose(){
                     <option>Inactive</option>
                 </select>
             </div>
-            <Table :items="allProject"/>
+            <Table @delete="handleDelete" :items="allProject"/>
         </div>
     </div>
 </template>

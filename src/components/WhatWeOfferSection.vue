@@ -14,11 +14,15 @@
           </div>
           <div class="bg-white rounded-lg p-6 shadow-sm">
             <h3 class="text-lg font-semibold mb-2 text-blue-600">Progress & Feedback</h3>
-            <p class="text-gray-700">Visual feedback and upcoming topic overviews to keep learners engaged and on track.</p>
+            <p class="text-gray-700">Learning can be fun when it's donw together. With out peer grouped learning you stand to achieve a lot</p>
+          </div>
+          <div class="bg-white rounded-lg p-6 shadow-sm">
+            <h3 class="text-lg font-semibold mb-2 text-blue-600">Peered Learning</h3>
+            <p class="text-gray-700">With our Peer learning and active community, you get the chance to learn more and research better</p>
           </div>
         </div>
         <div class="mt-12 text-center">
-          <router-link to="/register" class="inline-block bg-blue-600 text-white font-semibold px-8 py-4 rounded-lg shadow hover:bg-blue-700 transition">
+          <router-link to="/login" class="inline-block bg-blue-600 text-white font-semibold px-8 py-4 rounded-lg shadow hover:bg-blue-700 transition">
             Start Learning — It’s Free
           </router-link>
         </div>

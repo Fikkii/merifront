@@ -1,5 +1,7 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, defineEmits } from 'vue'
+
+const emits = defineEmits(['delete', 'edit'])
 
 const props = defineProps({
   items: {
@@ -9,19 +11,50 @@ const props = defineProps({
   }
 })
 
+const actions = [
+{
+    action: 'edit',
+    icon: 'fas fa-edit',
+    hover: 'blue'
+},
+{
+    action: 'download',
+    icon: 'fas fa-download',
+    hover: 'blue'
+},
+{
+    action: 'delete',
+    icon: 'fas fa-trash',
+    hover: 'red'
+},
+]
+
 const columns = computed(() => {
   if (!Array.isArray(props.items) || props.items.length === 0) return []
   return Object.keys(props.items[0])
 })
 
-function handleDropdown(id) {
-  console.log(id)
+function handleDropdown(e) {
+  console.log(e.target.id)
+}
+
+function handleClick(e, id, action){
+    switch (action) {
+        case 'delete': 
+            emits('delete', id)
+            break;
+        case 'edit': 
+            emits('edit', id)
+            break;
+        default:
+            console.log("Action is not available")
+    }
 }
 </script>
 
 <template>
 <!-- Responsive Table Wrapper -->
-<div class="w-full overflow-x-auto bg-white rounded-xl shadow-md">
+<div class="w-full overflow-x-auto bg-white rounded-xl shadow-2xl">
   <table class="min-w-full table-auto text-left border-collapse">
     <thead class="bg-gray-100">
       <tr>
@@ -50,15 +83,9 @@ function handleDropdown(id) {
         >
           {{ row[key] }}
         </td>
-        <td class="px-4 py-3 flex flex-wrap gap-2 items-center border-b border-gray-100">
-          <button class="text-indigo-600 hover:text-indigo-800 transition">
-            <i class="fas fa-edit"></i>
-          </button>
-          <button class="text-green-600 hover:text-green-800 transition">
-            <i class="fas fa-download"></i>
-          </button>
-          <button class="text-red-600 hover:text-red-800 transition">
-            <i class="fas fa-trash"></i>
+        <td class="px-4 py-3 flex flex-col gap-1 flex-wrap items-center">
+            <button @click="(e) => handleClick(e, row.id, action.action)" v-for="action in actions" :class="[action.hover == 'blue' ? 'hover:bg-indigo-500': 'hover:bg-red-500', 'hover:text-white']" class="text-gray-600 p-2 rounded bg-gray-50 hover:text-indigo-800 transition">
+            <i :class="action.icon"></i>
           </button>
         </td>
       </tr>

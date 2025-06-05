@@ -22,6 +22,12 @@ function filterAction(role) {
   dynamicLink.value = links.filter(value => value.role.includes(role))
 }
 
+function routerToggle(){
+if(window.innerWidth < 400){
+toggle.value = false
+}
+}
+
 onMounted(() => {
   filterAction(role)
 })
@@ -58,9 +64,8 @@ const links = [
 
       <ul v-if="toggle" class="py-5 space-y-1">
         <li v-for="link in dynamicLink" :key="link.link">
-          <RouterLink
+          <RouterLink @click="routerToggle"
             :to="{ name: link.link }"
-            @click="toggle = false"
             class="flex items-center px-5 py-3 text-white/80 hover:text-white hover:bg-white/10 transition-all border-l-4 border-transparent"
             :class="{ 'bg-white/10 text-white border-yellow-400': $route.name === link.link }"
           >

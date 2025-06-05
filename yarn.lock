@@ -35,6 +35,105 @@
     "@babel/helper-string-parser" "^7.27.1"
     "@babel/helper-validator-identifier" "^7.27.1"
 
+"@cropper/element-canvas@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/@cropper/element-canvas/-/element-canvas-2.0.0.tgz"
+  integrity sha512-GPtGJgSm92crJhhhwUsaMw3rz2KfJWWSz7kRAlufFEV/EHTP5+6r6/Z1BCGRna830i+Avqbm435XLOtA7PVJwA==
+  dependencies:
+    "@cropper/element" "^2.0.0"
+    "@cropper/utils" "^2.0.0"
+
+"@cropper/element-crosshair@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/@cropper/element-crosshair/-/element-crosshair-2.0.0.tgz"
+  integrity sha512-KfPfyrdeFvUC31Ws7ATtcalWWSaMtrC6bMoCipZhqbUOE7wZoL4ecDSL6BUOZxPa74awZUqfzirCDjHvheBfyw==
+  dependencies:
+    "@cropper/element" "^2.0.0"
+    "@cropper/utils" "^2.0.0"
+
+"@cropper/element-grid@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/@cropper/element-grid/-/element-grid-2.0.0.tgz"
+  integrity sha512-i78SQ0IJTLFveKX6P7svkfMYVdgHrQ8ZmmEw8keFy9n1ZVbK+SK0UHK5FNMRNI/gtVhKJOGEnK/zeyjUdj4Iyw==
+  dependencies:
+    "@cropper/element" "^2.0.0"
+    "@cropper/utils" "^2.0.0"
+
+"@cropper/element-handle@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/@cropper/element-handle/-/element-handle-2.0.0.tgz"
+  integrity sha512-ZJvW+0MkK9E8xYymGdoruaQn2kwjSHFpNSWinjyq6csuVQiCPxlX5ovAEDldmZ9MWePPtWEi3vLKQOo2Yb0T8g==
+  dependencies:
+    "@cropper/element" "^2.0.0"
+    "@cropper/utils" "^2.0.0"
+
+"@cropper/element-image@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/@cropper/element-image/-/element-image-2.0.0.tgz"
+  integrity sha512-9BxiTS/aHRmrjopaFQb9mQQXmx4ruhYHGkDZMVz24AXpMFjUY6OpqrWse/WjzD9tfhMFvEdu17b3VAekcAgpeg==
+  dependencies:
+    "@cropper/element" "^2.0.0"
+    "@cropper/element-canvas" "^2.0.0"
+    "@cropper/utils" "^2.0.0"
+
+"@cropper/element-selection@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/@cropper/element-selection/-/element-selection-2.0.0.tgz"
+  integrity sha512-ensNnbIfJsJ8bhbJTH/RXtk2URFvTOO4TvfRk461n2FPEC588D7rwBmUJxQg74IiTi4y1JbCI+6j+4LyzYBLCQ==
+  dependencies:
+    "@cropper/element" "^2.0.0"
+    "@cropper/element-canvas" "^2.0.0"
+    "@cropper/element-image" "^2.0.0"
+    "@cropper/utils" "^2.0.0"
+
+"@cropper/element-shade@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/@cropper/element-shade/-/element-shade-2.0.0.tgz"
+  integrity sha512-jv/2bbNZnhU4W+T4G0c8ADocLIZvQFTXgCf2RFDNhI5UVxurzWBnDdb8Mx8LnVplnkTqO+xUmHZYve0CwgWo+Q==
+  dependencies:
+    "@cropper/element" "^2.0.0"
+    "@cropper/element-canvas" "^2.0.0"
+    "@cropper/element-selection" "^2.0.0"
+    "@cropper/utils" "^2.0.0"
+
+"@cropper/element-viewer@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/@cropper/element-viewer/-/element-viewer-2.0.0.tgz"
+  integrity sha512-zY+3VRN5TvpM8twlphYtXw0tzJL2VgzeK7ufhL1BixVqOdRxwP13TprYIhqwGt9EW/SyJZUiaIu396T89kRX8A==
+  dependencies:
+    "@cropper/element" "^2.0.0"
+    "@cropper/element-canvas" "^2.0.0"
+    "@cropper/element-image" "^2.0.0"
+    "@cropper/element-selection" "^2.0.0"
+    "@cropper/utils" "^2.0.0"
+
+"@cropper/element@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/@cropper/element/-/element-2.0.0.tgz"
+  integrity sha512-lsthn0nQq73GExUE7Mg/ss6Q3RXADGDv055hxoLFwvl/wGHgy6ZkYlfLZ/VmgBHC6jDK5IgPBFnqrPqlXWSGBA==
+  dependencies:
+    "@cropper/utils" "^2.0.0"
+
+"@cropper/elements@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/@cropper/elements/-/elements-2.0.0.tgz"
+  integrity sha512-PQkPo1nUjxLFUQuHYu+6atfHxpX9B41Xribao6wpvmvmNIFML6LQdNqqWYb6LyM7ujsu71CZdBiMT5oetjJVoQ==
+  dependencies:
+    "@cropper/element" "^2.0.0"
+    "@cropper/element-canvas" "^2.0.0"
+    "@cropper/element-crosshair" "^2.0.0"
+    "@cropper/element-grid" "^2.0.0"
+    "@cropper/element-handle" "^2.0.0"
+    "@cropper/element-image" "^2.0.0"
+    "@cropper/element-selection" "^2.0.0"
+    "@cropper/element-shade" "^2.0.0"
+    "@cropper/element-viewer" "^2.0.0"
+
+"@cropper/utils@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/@cropper/utils/-/utils-2.0.0.tgz"
+  integrity sha512-cprLYr+7kK3faGgoOsTW9gIn5sefDr2KwOmgyjzIXk+8PLpW8FgFKEg5FoWfRD5zMAmkCBuX6rGKDK3VdUEGrg==
+
 "@esbuild/win32-x64@0.25.4":
   version "0.25.4"
   resolved "https://registry.npmjs.org/@esbuild/win32-x64/-/win32-x64-0.25.4.tgz"
@@ -342,6 +441,13 @@ boolbase@^1.0.0:
   resolved "https://registry.npmjs.org/boolbase/-/boolbase-1.0.0.tgz"
   integrity sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==
 
+browser-image-compression@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.npmjs.org/browser-image-compression/-/browser-image-compression-2.0.2.tgz"
+  integrity sha512-pBLlQyUf6yB8SmmngrcOw3EoS4RpQ1BcylI3T9Yqn7+4nrQTXJD4sJDe5ODnJdrvNMaio5OicFo75rDyJD2Ucw==
+  dependencies:
+    uzip "0.20201231.0"
+
 bytes@^3.1.2, bytes@3.1.2:
   version "3.1.2"
   resolved "https://registry.npmjs.org/bytes/-/bytes-3.1.2.tgz"
@@ -397,6 +503,11 @@ chownr@^3.0.0:
   resolved "https://registry.npmjs.org/chownr/-/chownr-3.0.0.tgz"
   integrity sha512-+IxzY9BZOQd/XuYPRmrvEVjF/nqj5kgT4kEq7VofrDoM1MxoRjEWkrCC3EtLi59TVawxTAn+orJwFQcrqEN1+g==
 
+classnames@^2.2.6:
+  version "2.5.1"
+  resolved "https://registry.npmjs.org/classnames/-/classnames-2.5.1.tgz"
+  integrity sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==
+
 combined-stream@^1.0.8:
   version "1.0.8"
   resolved "https://registry.npmjs.org/combined-stream/-/combined-stream-1.0.8.tgz"
@@ -438,6 +549,14 @@ copy-anything@^3.0.2:
   dependencies:
     is-what "^4.1.8"
 
+cropperjs@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/cropperjs/-/cropperjs-2.0.0.tgz"
+  integrity sha512-TO2j0Qre01kPHbow4FuTrbdEB4jTmGRySxW49jyEIqlJZuEBfrvCTT0vC3eRB2WBXudDfKi1Onako6DKWKxeAQ==
+  dependencies:
+    "@cropper/elements" "^2.0.0"
+    "@cropper/utils" "^2.0.0"
+
 css-select@^5.1.0:
   version "5.1.0"
   resolved "https://registry.npmjs.org/css-select/-/css-select-5.1.0.tgz"
@@ -463,6 +582,11 @@ csstype@^3.1.3:
   version "3.1.3"
   resolved "https://registry.npmjs.org/csstype/-/csstype-3.1.3.tgz"
   integrity sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==
+
+debounce@^1.2.0:
+  version "1.2.1"
+  resolved "https://registry.npmjs.org/debounce/-/debounce-1.2.1.tgz"
+  integrity sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug==
 
 debug@^4.3.5, debug@^4.4.0:
   version "4.4.1"
@@ -561,6 +685,11 @@ dunder-proto@^1.0.1:
     call-bind-apply-helpers "^1.0.1"
     es-errors "^1.3.0"
     gopd "^1.2.0"
+
+easy-bem@^1.0.2:
+  version "1.1.1"
+  resolved "https://registry.npmjs.org/easy-bem/-/easy-bem-1.1.1.tgz"
+  integrity sha512-GJRqdiy2h+EXy6a8E6R+ubmqUM08BK0FWNq41k24fup6045biQ8NXxoXimiwegMQvFFV3t1emADdGNL1TlS61A==
 
 ee-first@1.1.1:
   version "1.1.1"
@@ -1467,6 +1596,11 @@ util-deprecate@^1.0.2:
   resolved "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz"
   integrity sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==
 
+uzip@0.20201231.0:
+  version "0.20201231.0"
+  resolved "https://registry.npmjs.org/uzip/-/uzip-0.20201231.0.tgz"
+  integrity sha512-OZeJfZP+R0z9D6TmBgLq2LHzSSptGMGDGigGiEe0pr8UBe/7fdflgHlHBNDASTXB5jnFuxHpNaJywSg8YFeGng==
+
 valid-data-url@^3.0.0:
   version "3.0.1"
   resolved "https://registry.npmjs.org/valid-data-url/-/valid-data-url-3.0.1.tgz"
@@ -1491,6 +1625,15 @@ vary@^1.1.2:
   optionalDependencies:
     fsevents "~2.3.3"
 
+vue-advanced-cropper@^2.8.9:
+  version "2.8.9"
+  resolved "https://registry.npmjs.org/vue-advanced-cropper/-/vue-advanced-cropper-2.8.9.tgz"
+  integrity sha512-1jc5gO674kVGpJKekoaol6ZlwaF5VYDLSBwBOUpViW0IOrrRsyLw6XNszjEqgbavvqinlKNS6Kqlom3B5M72Tw==
+  dependencies:
+    classnames "^2.2.6"
+    debounce "^1.2.0"
+    easy-bem "^1.0.2"
+
 vue-router@^4.5.1:
   version "4.5.1"
   resolved "https://registry.npmjs.org/vue-router/-/vue-router-4.5.1.tgz"
@@ -1503,7 +1646,7 @@ vue-toastification@^2.0.0-rc.5:
   resolved "https://registry.npmjs.org/vue-toastification/-/vue-toastification-2.0.0-rc.5.tgz"
   integrity sha512-q73e5jy6gucEO/U+P48hqX+/qyXDozAGmaGgLFm5tXX4wJBcVsnGp4e/iJqlm9xzHETYOilUuwOUje2Qg1JdwA==
 
-"vue@^2.7.0 || ^3.5.11", vue@^3.0.2, vue@^3.2.0, vue@^3.2.25, vue@^3.5.13, vue@3.5.14:
+"vue@^2.7.0 || ^3.5.11", vue@^3.0.0, vue@^3.0.2, vue@^3.2.0, vue@^3.2.25, vue@^3.5.13, vue@3.5.14:
   version "3.5.14"
   resolved "https://registry.npmjs.org/vue/-/vue-3.5.14.tgz"
   integrity sha512-LbOm50/vZFG6Mhy6KscQYXZMQ0LMCC/y40HDJPPvGFQ+i/lUH+PJHR6C3assgOQiXdl6tAfsXHbXYVBZZu65ew==

@@ -53,8 +53,7 @@ async function handleEdit(id, course_id){
     fetchModules()
 }
 
-function handleDelete(e){
-    const id = e.currentTarget.id
+function handleDelete(id){
     const res = axios.delete(`/api/admin/modules/${id}`)
     fetchModules()
 }
@@ -112,22 +111,10 @@ function formClose(){
                 </select>
             </div>
             </Modal>
-
         </div>
         <div :class="[toggler ? 'blur' : '']">
-            <div>
-                <button @click="toggler = !toggler" class="bg-blue-500 py-2 text-white block col-start-2 ms-auto w-[200px] rounded">Add module</button>
-                <div class="flex gap-2 mt-4">
-                    <input class="px-4 py-2 rounded-sm flex-1" placeholder="Enter Module Title" type="text"/>
-                    <button class="px-4 py-2 bg-yellow-500 text-white rounded">Search</button>
-                </div>
-                <select class="px-4 py-2 mt-2 border rounded-sm">
-                    <option>Latest</option>
-                    <option>Active</option>
-                    <option>Inactive</option>
-                </select>
-            </div>
-            <CategorizedTable :items="availableModules" /> 
+            <button @click="toggler = !toggler" class="bg-blue-500 py-2 text-white block col-start-2 ms-auto w-[200px] rounded">Add module</button>
+            <CategorizedTable @delete="handleDelete" :items="availableModules" /> 
         </div>
     </div>
 </template>

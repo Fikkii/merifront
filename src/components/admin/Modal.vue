@@ -65,11 +65,13 @@
 
 .modal-content {
     background: white;
-    margin: 5% auto;
+    margin: 2% auto;
     padding: 0;
     border-radius: 12px;
     width: 90%;
     max-width: 500px;
+    overflow-y: scroll;
+    max-height: 600px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 

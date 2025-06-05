@@ -1,5 +1,7 @@
 <script setup>
     import Modal from '../../components/admin/Modal.vue'
+    import ImageCropper from '../../components/utils/ImageCropper.vue'
+
     import { ref, onMounted } from 'vue'
 
     const props = defineProps({
@@ -14,11 +16,11 @@
     const availableCourse = ref([])
     const toggler = ref( false )
 
+    const imageRef = ref(null)
+
     onMounted(fetchCourse)
 
-    function handleDelete(e){
-        const id = e.currentTarget.id
-        console.log(id)
+    function handleDelete(id){
         const res = axios.delete(`/api/admin/courses/${id}`)
         fetchCourse()
     }
@@ -52,9 +54,13 @@ async function fetchCourse() {
 }
 
 async function formSubmit(){
-    const res = axios.post('/api/admin/courses', {
-        title: fields.value[0].res,
-        description: fields.value[1].res
+    const formData = await imageRef.value.getCroppedImage()
+    formData.append('title', fields.value[0].res)
+    formData.append('description', fields.value[1].res)
+    const res = axios.post('/api/admin/courses', formData, {
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
     })
     fetchCourse()
     toggler.value = !toggler.value
@@ -74,13 +80,15 @@ function formClose(){
     <div>
         <div>
             <Modal v-if="toggler" :fields="fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
+            <ImageCropper ref="imageRef" />
             </Modal>
         </div>
         <div :class="[toggler ? 'blur' : '']">
+            <h3 class="text-xl mb-3">Course Management</h3>
             <div class="mb-4" v-if="!props.dashboard">
                 <button @click="toggler = !toggler" class="bg-blue-500 py-2 text-white block col-start-2 ms-auto w-[200px] rounded">Add course</button>
             </div>
-            <Table :items="availableCourse"/>
+            <Table @delete="handleDelete" :items="availableCourse"/>
         </div>
     </div>
 </template>
