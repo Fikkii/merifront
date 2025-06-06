@@ -2,7 +2,10 @@
     import Modal from '../../components/admin/Modal.vue'
     import ImageCropper from '../../components/utils/ImageCropper.vue'
 
-    import { ref, onMounted } from 'vue'
+    // Import middleware to fetch course
+    import { fetchCourses } from '../../controllers/controller.js'
+
+    import { ref, onMounted, onUpdated } from 'vue'
 
     const props = defineProps({
         dashboard: {
@@ -18,51 +21,46 @@
 
     const imageRef = ref(null)
 
-    onMounted(fetchCourse)
+    onMounted(async () => availableCourse.value = await fetchCourses())
+    onUpdated(async () => availableCourse.value = await fetchCourses())
 
     function handleDelete(id){
         const res = axios.delete(`/api/admin/courses/${id}`)
-        fetchCourse()
     }
 
+function handleEdit(){
+    
+}
 
     const fields = ref([
     {
         name: 'title',
         placeholder: 'Enter Course Title',
+        type: 'text',
+        res: ''
+    },
+    {
+        name: 'price',
+        placeholder: 'Enter Course Pricing',
+        type: 'number',
         res: ''
     },
     {
         name: 'description',
         placeholder: 'Enter Course Description',
+        type: 'text',
         res: ''
     },
     ])
 
-async function fetchCourse() {
-  try {
-    const res = await axios.get('/api/courses')
-
-    if (res.status == 200) {
-        const data = res.data
-        availableCourse.value = data
-        console.log(res.data)
-    }
-  } catch (e) {
-    console.error('Caught error:', e);
-  }
-}
-
-async function formSubmit(){
-    const formData = await imageRef.value.getCroppedImage()
-    formData.append('title', fields.value[0].res)
-    formData.append('description', fields.value[1].res)
+async function formSubmit(formData){
+    const imgblob = await imageRef.value.getCroppedImage()
+    formData.append('image', imgblob, 'cropped-img')
     const res = axios.post('/api/admin/courses', formData, {
         headers: {
             "Content-Type": "multipart/form-data"
         }
     })
-    fetchCourse()
     toggler.value = !toggler.value
 }
 
@@ -88,7 +86,7 @@ function formClose(){
             <div class="mb-4" v-if="!props.dashboard">
                 <button @click="toggler = !toggler" class="bg-blue-500 py-2 text-white block col-start-2 ms-auto w-[200px] rounded">Add course</button>
             </div>
-            <Table @delete="handleDelete" :items="availableCourse"/>
+            <Table @delete="handleDelete" @edit="handleEdit" :items="availableCourse"/>
         </div>
     </div>
 </template>

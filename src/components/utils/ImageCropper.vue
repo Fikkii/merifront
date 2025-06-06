@@ -57,9 +57,7 @@ const getCroppedImage = async () => {
     const blob = await new Promise((resolve) =>
       result.canvas.toBlob(resolve, 'image/jpeg', 0.9)
     )
-    const formData = new FormData()
-    formData.append('image', blob, 'cropped.jpg')
-    return formData
+    return blob
   }
 }
 

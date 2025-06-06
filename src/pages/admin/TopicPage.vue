@@ -1,9 +1,12 @@
 <script setup>
     import Modal from '../../components/admin/Modal.vue'
     import ToastEditor from '../../components/ToastEditor.vue'
-    import { ref, onMounted } from 'vue'
+    import { ref, onMounted, onUpdated } from 'vue'
 
     import { useToast } from 'vue-toastification'
+
+    //import controllers to fetch data
+    import { fetchTopics, fetchModules } from '../../controllers/controller.js'
 
     import axios from 'axios'
 
@@ -17,11 +20,11 @@
 
     const toastRef = ref(null)
 
-    onMounted(() => { fetchTopics(), fetchModules() })
+    onMounted(async () => { availableTopics.value = await fetchTopics(); availableModules.value = await fetchModules() })
+    onUpdated(async () => { availableTopics.value = await fetchTopics(); availableModules.value = await fetchModules() })
 
 function handleDelete(id){
     const res = axios.delete(`/api/admin/topics/${id}`)
-    fetchTopics()
 }
 
     const fields = ref([
@@ -29,6 +32,13 @@ function handleDelete(id){
         name: 'title',
         placeholder: 'Enter topic Title',
         res: ''
+    },
+    {
+        name: 'moduleId',
+        placeholder: 'Enter topic Title',
+        res: '',
+        type: 'select',
+        options: {}
     },
     ])
 
@@ -43,33 +53,6 @@ async function handleEdit(id, topic_id){
 
 function getMarkdown(message){
     content.value = message
-}
-
-async function fetchTopics() {
-  try {
-    const res = await axios.get('/api/topics')
-
-    if (res.status == 200) {
-        const data = res.data
-        console.log(data)
-        availableTopics.value = data
-    }
-  } catch (e) {
-    console.error('Caught error:', e);
-  }
-}
-
-async function fetchModules() {
-  try {
-    const res = await axios.get('/api/modules')
-
-    if (res.status == 200) {
-        const data = res.data
-        availableModules.value = data
-    }
-  } catch (e) {
-    console.error('Caught error:', e);
-  }
 }
 
 function updateField(index, value){
@@ -88,7 +71,6 @@ try{
         content: content.value,
     })
 
-    fetchTopics()
     toggler.value = !toggler.value
     toast.success('Topic Created Successfully...')
 }catch(e){

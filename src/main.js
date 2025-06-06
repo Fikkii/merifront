@@ -6,6 +6,7 @@ import Toast, { POSITION } from 'vue-toastification'
 import Dropdown from './components/utils/Dropdown.vue'
 import Table from './components/utils/Table.vue'
 import CategorizedTable from './components/utils/CategorizedTable.vue'
+import Card from './components/utils/Card.vue'
 
 import { createPinia } from 'pinia'
 
@@ -17,6 +18,7 @@ const app = createApp(App)
     app.component('Dropdown', Dropdown)
     app.component('Table', Table)
     app.component('CategorizedTable', CategorizedTable)
+    app.component('Card', Card)
     app.use(pinia)
     .use(router)
     .use(Toast, {

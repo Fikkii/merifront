@@ -1,7 +1,10 @@
 <script setup>
     import Modal from '../../components/admin/Modal.vue'
-    import { ref, onMounted } from 'vue'
+    import { ref, onMounted, onUpdated } from 'vue'
     import { useToast } from 'vue-toastification'
+
+    //Import controllers for fetching data
+    import { fetchModules, fetchCourses } from '../../controllers/controller.js'
 
     import axios from 'axios'
 
@@ -14,34 +17,30 @@
 
     const toast = useToast()
 
-    onMounted(() => {fetchModules(), fetchCourse()})
+    onMounted(async () => {
+    availableModules.value = await fetchModules();
+    console.log(availableModules.value)
+    availableCourse.value = await fetchCourses()
+    })
+
+    onUpdated(async () => availableModules.value = await fetchModules())
 
 
     const fields = ref([
     {
         name: 'title',
         placeholder: 'Enter module Title',
-        res: ''
+        res: '',
+        type: 'text'
     },
     {
-        name: 'order',
-        placeholder: 'Enter module Order',
-        res: ''
+        name: 'courseId',
+        placeholder: 'Select Course Title',
+        res: '',
+        type: 'select',
+        options: {}
     },
     ])
-
-async function fetchCourse() {
-  try {
-    const res = await axios.get('/api/courses')
-
-    if (res.status == 200) {
-        const data = res.data
-        availableCourse.value = data
-    }
-  } catch (e) {
-    console.error('Caught error:', e);
-  }
-}
 
 async function handleEdit(id, course_id){
     const res = await axios.put('/api/admin/modules', {
@@ -50,7 +49,6 @@ async function handleEdit(id, course_id){
         title: fields.value[0].res,
         order: fields.value[1].res,
     })
-    fetchModules()
 }
 
 function handleDelete(id){
@@ -58,36 +56,24 @@ function handleDelete(id){
     fetchModules()
 }
 
-async function fetchModules() {
-  try {
-    const res = await axios.get('/api/modules')
-
-    if (res.status == 200) {
-        const data = res.data
-        availableModules.value = data
-        console.log(availableModules.value)
-    }
-  } catch (e) {
-    console.error('Caught error:', e);
-  }
-}
-
 function updateField(index, value){
 fields.value[index].res = value
 }
 
-async function formSubmit(){
+async function formSubmit(formData){
+const jsonData = Object.fromEntries(formData)
 try{
-    const res = await axios.post('/api/admin/modules', {
-        courseId: courseId.value,
-        title: fields.value[0].res,
-        order: fields.value[1].res,
+    const res = await axios.post('/api/admin/modules', jsonData, {
+        headers: {
+            "Content-Type": 'application/json'
+        }
     })
+
     if(res.status !== 201){
         throw new Error('Unable to create Module')
         toast.error('Unable to create Module...')
     }
-    fetchModules()
+
     toggler.value = false
     toast.success('Module Created Successfully...')
 }catch(e){
@@ -105,11 +91,6 @@ function formClose(){
     <div>
         <div>
             <Modal v-if="toggler" :fields="fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
-            <div class="mt-3">
-                <select v-model="courseId" class="p-2 border">
-                    <option v-for="course in availableCourse" :value="course.id">{{ course.title }}</option>
-                </select>
-            </div>
             </Modal>
         </div>
         <div :class="[toggler ? 'blur' : '']">

@@ -45,7 +45,7 @@ onMounted(() => {
         <h2 class="text-3xl border-b-4 border-blue-500 text-white font-bold mb-10">Program Curricula</h2>
         <--nav -->
         <div class="flex gap-2 mb-5 min-w-50 overflow-x-auto">
-            <button :class="[course_id == course.id ? 'bg-blue-500' : '']" @click="handleCurriculum" :id="course.id" v-for="course in availableCourse" class="whitespace-nowrap px-4 flex-1 py-2 border border-blue-500 rounded text-lg text-white text-center">
+            <button :class="[course_id == course.id ? 'bg-blue-500' : '']" @click="handleCurriculum" :id="course.id" v-for="course in availableCourse" class="min-w-60 px-4 flex-1 py-2 border border-blue-500 rounded text-lg text-white text-center">
                 {{ course.title }} Curriculum
             </button>
         </div>
@@ -60,7 +60,7 @@ onMounted(() => {
                         <li v-for="(module, index) in course.modules"><i class="ri-calendar-fill text-blue-500"></i> <span>Module {{ index + 1 }}:</span> {{ module.title }}</li>
                     </ul>
                     <div><span>Price:</span> {{ course.price || 'Free' }} </div>
-                    <button class="bg-orange-500 rounded px-6 py-2 w-full">Register</button>
+                    <RouterLink :to="{ name: 'login' }" class="block text-center bg-orange-500 rounded px-6 py-2 w-full">Register</RouterLink>
                 </div>
             </div>
           </div>

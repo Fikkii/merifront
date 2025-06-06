@@ -65,10 +65,6 @@ const columns = computed(() => {
   return Object.keys(props.items[0])
 })
 
-function handleDropdown(e) {
-
-}
-
 function handleClick(e, id, action){
     switch (action) {
         case 'delete': 
@@ -163,7 +159,7 @@ console.log(filtered_data)
                                 >
                                 {{ row[key] }}
                         </td>
-                            <td class="px-4 py-3 flex flex-col gap-1 flex-wrap items-center">
+                            <td class="px-4 py-3 flex gap-1 items-center">
                                 <button @click="(e) => handleClick(e, row.id, action.action)" v-for="action in actions" :class="[action.hover == 'blue' ? 'hover:bg-indigo-500': 'hover:bg-red-500', 'hover:text-white']" class="text-gray-600 p-2 rounded bg-gray-50 hover:text-indigo-800 transition">
                     <i :class="action.icon"></i>
                                 </button>
