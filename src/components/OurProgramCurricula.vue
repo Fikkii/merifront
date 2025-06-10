@@ -52,12 +52,16 @@ onMounted(() => {
         <div class="grid text-left">
           <div class="p-6 shadow-sm">
             <div v-for="course in filteredCourse" class="p-2">
-                <img class="h-20 mx-auto md:h-70 w-auto" :src="`${apiUrl}${course.cover_img_url}`" alt="no image">
+                <img class="h-40 mx-auto md:h-70 w-auto" :src="`${apiUrl}${course.cover_img_url}`" alt="no image">
                 <div class="prose prose-sm min-w-full text-white">
                     <h3 class="text-lg font-semibold mb-2 text-blue-600"><span></span>{{ course.title }} Curriculum</h3>
                     <div><span>Description:</span> {{ course.description }} </div>
                     <ul>
-                        <li v-for="(module, index) in course.modules"><i class="ri-calendar-fill text-blue-500"></i> <span>Module {{ index + 1 }}:</span> {{ module.title }}</li>
+                        <li v-for="(module, index) in course.modules"><i class="ri-calendar-fill text-blue-500"></i> <span>Module {{ index + 1 }}:</span> {{ module.title }}
+                            <ul>
+                                <li v-for="(topic, index) in module.topics">{{ topic.title }}</li>
+                            </ul>
+                        </li>
                     </ul>
                     <div><span>Price:</span> {{ course.price || 'Free' }} </div>
                     <RouterLink :to="{ name: 'login' }" class="block text-center bg-orange-500 rounded px-6 py-2 w-full">Register</RouterLink>

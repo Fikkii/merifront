@@ -5,7 +5,7 @@
     // Import middleware to fetch course
     import { fetchCourses } from '../../controllers/controller.js'
 
-    import { ref, onMounted, onUpdated } from 'vue'
+    import { ref, onMounted } from 'vue'
 
     const props = defineProps({
         dashboard: {
@@ -22,14 +22,15 @@
     const imageRef = ref(null)
 
     onMounted(async () => availableCourse.value = await fetchCourses())
-    onUpdated(async () => availableCourse.value = await fetchCourses())
 
-    function handleDelete(id){
+    async function handleDelete(id){
         const res = axios.delete(`/api/admin/courses/${id}`)
+        availableCourse.value = await fetchCourses()
     }
 
-function handleEdit(){
+async function handleEdit(){
     
+        availableCourse.value = await fetchCourses()
 }
 
     const fields = ref([
@@ -62,6 +63,7 @@ async function formSubmit(formData){
         }
     })
     toggler.value = !toggler.value
+    availableCourse.value = await fetchCourses()
 }
 
 function updateField(index, value){

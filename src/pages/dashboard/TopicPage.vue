@@ -1,9 +1,11 @@
 <script setup>
-    import { ref, onMounted, nextTick } from 'vue'
-    import { useRouter } from 'vue-router'
+    import { ref, onMounted, nextTick, watch } from 'vue'
+    import { useRouter, useRoute } from 'vue-router'
     import { marked } from 'marked'
     import axios from 'axios'
     import hljs from 'highlight.js'
+
+    import ModuleList from '../../components/ModuleList.vue'
 
     import 'highlight.js/styles/github-dark.css' // ✅ Ensure this path is correct
 
@@ -22,8 +24,13 @@
     const content = ref([])
 
     const router = useRouter()
+    const routes = useRoute()
 
-    onMounted(async () => {
+    watch(() => routes.params.id, (newVal, oldVal) => {
+        fetchTopic()
+    })
+
+    async function fetchTopic(){
         const res = await axios.get(`/api/student/topic?topicId=${props.id}`)
 
         topic.value = res.data.topic
@@ -36,7 +43,9 @@
         if(res.status == 200){
             console.log(topic.value)
         }
-    })
+    }
+
+    onMounted(async () => { fetchTopic()})
 
     async function handleComplete(){
         axios.put('/api/student/topic/complete', { topicId: props.id })
@@ -46,22 +55,15 @@
 
 <template>
     <div v-if="topic">
-        <div class="flex flex-col pb-3 mb-4 gap-2">
-            <div class="flex justify-between items-center">
-                <span class="text-lg">Home</span>
-                <button @click="handleComplete" class="bg-indigo-600 px-6 text-white py-3 rounded">
-                    <i class="ri-check-line me-3"></i>
-                    <span>{{ topic.completed ? 'Completed' : 'Mark as Complete' }}</span>
-                </button>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 md:5 lg:gap-20 items-start">
+            <div class="hidden md:block sticky top-0 left-0">
+                <ModuleList />
             </div>
-            <div class="flex items-center gap-2">
-                <div class="flex-1 h-2 items-center rounded shadow bg-white"></div>
-                <span class>0</span>
+            <div class="col-span-2">
+                <div class="text-2xl text-blue-800 font-semibold border-b">Topic: {{ topic.title }} </div>
+                <div v-html="content" class="prose md:prose-md sm:prose-sm min-w-full"></div>
+                <button class="bg-indigo-500 px-4 py-2 text-white rounded shadow-xl mt-5 ms-auto block text-lg">Complete Reading</button>
             </div>
-        </div>
-        <div>
-            <div class="text-2xl text-blue-800 font-bold"> {{ topic.title }} </div>
-            <div v-html="content" class="prose md:prose-md sm:prose-sm"></div>
         </div>
     </div>
     <div v-else>

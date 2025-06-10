@@ -62,7 +62,7 @@ const routes = [
         beforeEnter: ( to, from ) => {
             const url = import.meta.env.VITE_API_URL
             const token = localStorage.getItem('jwt-token') || null
-            const user = localStorage.getItem('user') || null
+            const user_role = localStorage.getItem('user-role') || null
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
             axios.defaults.baseURL = url
             if( !token ){

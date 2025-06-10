@@ -10,11 +10,10 @@
         class="flex"
         :class="msg.role === 'user' ? 'justify-end' : 'justify-start'"
       >
-        <div
-          class="max-w-sm px-4 py-2 rounded-lg"
+        <div v-html="msg.content"
+          class="max-w-sm px-4 py-2 rounded-lg prose-sm"
           :class="msg.role === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-100'"
         >
-          {{ msg.content }}
         </div>
       </div>
     </div>
@@ -49,7 +48,8 @@
 
 <script setup>
     import SuggestionCard from './SuggestionCard.vue'
-    import { ref, onMounted, watch } from 'vue'
+    import { ref, onMounted, watch, computed } from 'vue'
+    import { marked } from 'marked'
 import axios from 'axios'
 
 async function handleSuggestion(){
@@ -96,6 +96,14 @@ const sendMessage = async () => {
       role: 'model',
       content: res.data.reply,
     })
+
+const styledOutput = computed(() => {
+    messages.map((value) ({
+        role: value.role,
+        content: marked.parse(value.content)
+    }))
+})
+console.log(styledOutput)
   } catch (err) {
     messages.value.push({
       role: 'model',
@@ -106,6 +114,7 @@ const sendMessage = async () => {
     loading.value = false
   }
 }
+
 
 watch(messages, () => {
   nextTick(() => {

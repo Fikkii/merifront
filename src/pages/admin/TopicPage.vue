@@ -21,10 +21,11 @@
     const toastRef = ref(null)
 
     onMounted(async () => { availableTopics.value = await fetchTopics(); availableModules.value = await fetchModules() })
-    onUpdated(async () => { availableTopics.value = await fetchTopics(); availableModules.value = await fetchModules() })
 
-function handleDelete(id){
+async function handleDelete(id){
     const res = axios.delete(`/api/admin/topics/${id}`)
+    availableTopics.value = await fetchTopics();
+    availableModules.value = await fetchModules(); 
 }
 
     const fields = ref([
@@ -49,6 +50,8 @@ async function handleEdit(id, topic_id){
         title: fields.value[0].res,
         order: fields.value[1].res,
     })
+    availableTopics.value = await fetchTopics();
+    availableModules.value = await fetchModules(); 
 }
 
 function getMarkdown(message){
@@ -59,16 +62,19 @@ function updateField(index, value){
 fields.value[index].res = value
 }
 
-async function formSubmit(){
+async function formSubmit(formData){
 try{
     if(toastRef.value){
         content.value = toastRef.value.saveContent()
     }
 
-    const res = await axios.post('/api/admin/topics', {
-        moduleId: moduleId.value,
-        title: fields.value[0].res,
-        content: content.value,
+    formData.append('content', content.value)
+    const jsonData = Object.fromEntries(formData)
+
+    const res = await axios.post('/api/admin/topics', jsonData, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
     })
 
     toggler.value = !toggler.value
@@ -77,6 +83,8 @@ try{
 console.log(e)
     toast.error(e.response.data.error)
 }
+    availableTopics.value = await fetchTopics();
+    availableModules.value = await fetchModules(); 
 }
 
 function formClose(){
@@ -90,11 +98,6 @@ function formClose(){
     <div class="relative">
         <div>
             <Modal v-if="toggler" :fields="fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
-            <div class="mt-3">
-                <select v-model="moduleId" class="p-2 border">
-                    <option v-for="module in availableModules" :value="module.id">{{ module.module_title }}</option>
-                </select>
-            </div>
             <!-- The markdown editor stays here -->
             <div class="col-span-2">
                 <ToastEditor ref="toastRef" />

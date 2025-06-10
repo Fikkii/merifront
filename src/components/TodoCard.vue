@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-white h-full w-full shadow-lg rounded-xl p-6 max-w-md mx-auto">
+  <div class="bg-white h-full w-full shadow-lg rounded-xl p-6 ">
     <!-- Header with checklist SVG -->
-    <h2 class="text-sm font-bold border-b-2 text-green-700 mb-6 flex items-center justify-center gap-2">
+    <h2 class="text-sm font-bold border-b-2 text-green-700 mb-6 flex items-center justify-stretch gap-2">
       <i class="ri-list-check-3"></i>ToDo
     </h2>
 

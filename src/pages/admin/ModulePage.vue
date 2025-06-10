@@ -1,6 +1,6 @@
 <script setup>
     import Modal from '../../components/admin/Modal.vue'
-    import { ref, onMounted, onUpdated } from 'vue'
+    import { ref, onMounted } from 'vue'
     import { useToast } from 'vue-toastification'
 
     //Import controllers for fetching data
@@ -22,9 +22,6 @@
     console.log(availableModules.value)
     availableCourse.value = await fetchCourses()
     })
-
-    onUpdated(async () => availableModules.value = await fetchModules())
-
 
     const fields = ref([
     {
@@ -49,11 +46,12 @@ async function handleEdit(id, course_id){
         title: fields.value[0].res,
         order: fields.value[1].res,
     })
+    availableModules.value = await fetchModules()
 }
 
-function handleDelete(id){
+async function handleDelete(id){
     const res = axios.delete(`/api/admin/modules/${id}`)
-    fetchModules()
+     availableModules.value = await fetchModules()
 }
 
 function updateField(index, value){
@@ -76,6 +74,7 @@ try{
 
     toggler.value = false
     toast.success('Module Created Successfully...')
+    availableModules.value = await fetchModules()
 }catch(e){
     toast.error('Unable to create Module...')
 }

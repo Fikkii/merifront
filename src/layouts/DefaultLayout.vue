@@ -27,7 +27,7 @@ onMounted(() => {
             <img class="w-auto h-10" src="../assets/loader.gif"/>
         </div>
 
-        <div class="bg-red-500 w-full">
+        <div class="w-full">
             <RouterView :class="[loading ? 'blur' : '']"></RouterView>
         </div>
     </div>

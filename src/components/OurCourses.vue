@@ -33,8 +33,8 @@ onMounted(() => {
         <!--nav -->
         <h3 class="text-2xl font-bold">Available Courses</h3>
         <div class="grid gap-5 md:grid-cols-3 place-items-center text-left">
-            <div v-for="course in availableCourse" class="w-fit p-4 rounded shadow-lg">
-                <img class="h-20 md:h-70 w-auto" :src="`${apiUrl}${course.cover_img_url}`" alt="no image">
+            <div v-for="course in availableCourse" class="w-full p-4 rounded shadow-lg">
+                <img class="h-40 md:h-70 w-auto" :src="`${apiUrl}${course.cover_img_url}`" alt="no image">
                 <div class="prose prose-sm min-w-full my-3">
                     <div class="font-bold text-lg">{{ course.title }} </div>
                     <div>{{ course.description }} </div>
