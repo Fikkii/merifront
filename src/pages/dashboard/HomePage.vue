@@ -82,9 +82,9 @@ const getRecommendations = async (genre) => {
             <p>This is your progress so far, Keep up the pace by completing some topics today</p>
         </div>
         <div class="grid md:grid-cols-3 gap-2 ">
-            <Card title="Score" total="0"/>
-            <Card title="Score" total="0"/>
-            <Card title="Score" total="0"/>
+            <Card icon="fa-calendar" title="Attendance" total="0"/>
+            <Card icon="fa-briefcase" title="Project Completed" total="0"/>
+            <Card icon="ri-progress-3-line" title="Meri Score" total="0"/>
         </div>
         <DescButton title="Current Course:" :desc="currentCourse || 'Click Continue to Enroll in a course'" to="learning" class="bg-blue-100"/>
         <DescButton title="Learning with AI" desc="Partner up with AI" to="chat" class="bg-orange-100">

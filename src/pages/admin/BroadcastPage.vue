@@ -38,7 +38,8 @@ async function fetchStudents(){
 try{
     const res = await axios.get('/api/students')
     const data = res.data
-    recipients.value = data.map(value => value.student_email)
+    recipients.value = data.map(value => value.email)
+    console.log(recipients.value)
     toggler.value = false
 }catch(e){
     console.log(e)
@@ -139,15 +140,11 @@ fields.value[index].res = value
         <div :class="[toggler ? 'blur' : '']">
             <div>
                 <button @click="toggler = !toggler" class="bg-blue-500 py-2 text-white block col-start-2 ms-auto w-[200px] rounded">Send Email</button>
-                <div class="flex gap-2 mt-4">
-                    <input class="px-4 py-2 rounded-sm flex-1" placeholder="Enter topic Title" type="text"/>
-                    <button class="px-4 py-2 bg-yellow-500 text-white rounded">Search</button>
+                <div class="text-4xl flex justify-center mt-40 items-center">
+                    <div>
+                        SEND A BROADCAST MAIL TO ALL USERS...
+                    </div>
                 </div>
-                <select class="px-4 py-2 mt-2 border rounded-sm">
-                    <option>Latest</option>
-                    <option>Active</option>
-                    <option>Inactive</option>
-                </select>
             </div>
         </div>
     </div>

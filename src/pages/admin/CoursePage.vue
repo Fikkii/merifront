@@ -1,11 +1,16 @@
 <script setup>
     import Modal from '../../components/admin/Modal.vue'
     import ImageCropper from '../../components/utils/ImageCropper.vue'
+    import { useToast } from 'vue-toastification'
+    import { useRouter } from 'vue-router'
 
     // Import middleware to fetch course
     import { fetchCourses } from '../../controllers/controller.js'
 
-    import { ref, onMounted } from 'vue'
+    import { ref, onMounted, nextTick, watch } from 'vue'
+
+    const toast = useToast()
+    const router = useRouter()
 
     const props = defineProps({
         dashboard: {
@@ -16,23 +21,18 @@
 
     import axios from 'axios'
 
-    const availableCourse = ref([])
+    const availableCourse = ref(null)
     const toggler = ref( false )
-
-    const imageRef = ref(null)
-
-    onMounted(async () => availableCourse.value = await fetchCourses())
-
-    async function handleDelete(id){
-        const res = axios.delete(`/api/admin/courses/${id}`)
-        availableCourse.value = await fetchCourses()
-    }
-
-async function handleEdit(){
     
-        availableCourse.value = await fetchCourses()
-}
+    const imageRef = ref(null) //This holds reference to the child component that handles upload
 
+    // This stores the edit id and sets the mode accordingly...
+    const editId = ref(null)
+
+    // Text fields
+    const editFields = ref(null) // This handles text field when edit mode is on
+
+    // Regular text field
     const fields = ref([
     {
         name: 'title',
@@ -54,24 +54,88 @@ async function handleEdit(){
     },
     ])
 
+    onMounted(async () => {availableCourse.value = await fetchCourses()})
+
+    async function handleDelete(id){
+        const res = axios.delete(`/api/admin/courses/${id}`)
+        availableCourse.value = await fetchCourses()
+    }
+
+async function handleEdit(id='1'){
+        //Edit mode is active
+        editId.value = id
+
+        const data = await axios.get(`/api/courses/${id}`)
+
+        const inputStruct = Object.entries(data.data).map(([key, value]) => {
+            const exclude = ['id', 'cover_img_url']
+            if(exclude.includes(key)){
+                return null
+            }
+
+            return {
+            name: key,
+            placeholder: 'No placeholder',
+            type: 'text',
+            res: value
+            }
+        })
+
+        const fillInput = inputStruct.filter(value => value != null)
+
+        editFields.value = fillInput
+        
+        toggler.value = true
+
+        availableCourse.value = await fetchCourses()
+}
+
 async function formSubmit(formData){
-    const imgblob = await imageRef.value.getCroppedImage()
-    formData.append('image', imgblob, 'cropped-img')
-    const res = axios.post('/api/admin/courses', formData, {
-        headers: {
-            "Content-Type": "multipart/form-data"
+    if(editId.value){
+        const imgblob = await imageRef.value.getCroppedImage()
+        if(!imgblob){
+            toast.error('Please Image needs to be re-uploaded')
+            return
         }
-    })
-    toggler.value = !toggler.value
+        formData.append('image', imgblob, 'cropped-img')
+        const res = axios.put(`/api/admin/courses/${editId.value}`, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        })
+    }else{
+        const imgblob = await imageRef.value.getCroppedImage()
+        formData.append('image', imgblob, 'cropped-img')
+        const res = axios.post('/api/admin/courses', formData, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        })
+    }
+
     availableCourse.value = await fetchCourses()
+    toggler.value = !toggler.value
 }
 
 function updateField(index, value){
-fields.value[index].res = value
+    if(editId.value){
+        editFields.value[index].res = value
+    }else{
+        fields.value[index].res = value
+    }
 }
 
 function formClose(){
     toggler.value = false
+}
+
+//handles Toggle
+function handleToggle(){
+    toggler.value = true
+
+    // Revert back to Add mode
+    editFields.value = null
+    editId.value = null
 }
 
 </script>
@@ -79,16 +143,14 @@ function formClose(){
 <template>
     <div>
         <div>
-            <Modal v-if="toggler" :fields="fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
+            <Modal v-if="toggler" :fields="editFields || fields" @update="updateField" @close="formClose" :edit="editId"  @submit="formSubmit" >
             <ImageCropper ref="imageRef" />
             </Modal>
         </div>
         <div :class="[toggler ? 'blur' : '']">
-            <h3 class="text-xl mb-3">Course Management</h3>
-            <div class="mb-4" v-if="!props.dashboard">
-                <button @click="toggler = !toggler" class="bg-blue-500 py-2 text-white block col-start-2 ms-auto w-[200px] rounded">Add course</button>
-            </div>
-            <Table @delete="handleDelete" @edit="handleEdit" :items="availableCourse"/>
+            <Table @delete="handleDelete" @edit="handleEdit" :items="availableCourse">
+                <button @click="handleToggle" class="bg-blue-500 ms-auto py-2 text-white block col-start-2 w-[100px] rounded"><i class="ri-add-line"></i>Add Course</button>
+            </Table>
         </div>
     </div>
 </template>

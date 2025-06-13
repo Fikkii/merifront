@@ -12,10 +12,13 @@
 
     const moduleId = ref([])
 
-    const availableModules = ref([])
+    // This stores the edit id and sets the mode accordingly...
+    const editId = ref(null)
 
-    onMounted(() => { fetchModules() })
+    // Text fields
+    const editFields = ref(null) // This handles text field when edit mode is on
 
+    // Regular text field
     const fields = ref([
     {
         name: 'title',
@@ -25,7 +28,21 @@
     {
         name: 'instructions',
         placeholder: 'Enter project instructions',
+        type: 'textarea',
         res: ''
+    },
+    {
+        name: 'rubric',
+        placeholder: 'Grading Criteria',
+        type: 'textarea',
+        res: '',
+    },
+    {
+        name: 'moduleId',
+        placeholder: 'Select Module Title',
+        res: '',
+        type: 'select',
+        options: {}
     },
     ])
 
@@ -51,42 +68,81 @@ function handleDelete(id){
 }
 
 function updateField(index, value){
-fields.value[index].res = value
-}
-
-async function fetchModules() {
-  try {
-    const res = await axios.get('/api/modules')
-
-    if (res.status == 200) {
-        const data = res.data
-        availableModules.value = data
+    if(editId.value){
+        editFields.value[index].res = value
+    }else{
+        fields.value[index].res = value
     }
-  } catch (e) {
-    console.error('Caught error:', e);
-  }
 }
 
+async function formSubmit(formData){
+    const jsonData = Object.fromEntries(formData)
 
-async function formSubmit(){
-try{
-    const res = axios.post('/api/admin/projects', {
-        moduleId: moduleId.value,
-        title: fields.value[0].res,
-        instructions: fields.value[1].res,
-    })
-    fetchProjects()
-    toggler.value = !toggler.value
-    toast.success('Project Created Successfully...')
-}catch(e){
-    toast.error('Unable to create Project...')
-}
+    try{
+        if(editId.value){
+            const res = axios.put(`/api/admin/projects/${editId.value}`, jsonData, {
+                headers: {
+                    "Content-Type": 'application/json'
+                }
+            })
+
+            toast.success('Project has been edited successfully')
+        }else{
+            const res = axios.post('/api/admin/projects', jsonData, {
+                headers: {
+                    "Content-Type": 'application/json'
+                }
+            })
+
+        }
+
+        toggler.value = false
+    }catch(e){
+        toast.error(e)
+    }finally{
+        fetchProjects()
+        availableCourse.value = await fetchCourses()
+    }
 }
 
 function formClose(){
     toggler.value = false
 }
 
+async function handleEdit(id='1'){
+        //Edit mode is active
+        editId.value = id
+
+        const data = await axios.get(`/api/projects/${id}`)
+
+        const inputStruct = Object.entries(data.data).map(([key, value]) => {
+            const exclude = ['id', 'cover_img_url']
+            if(exclude.includes(key)){
+                return null
+            }
+
+            return {
+            name: key,
+            placeholder: 'No placeholder',
+            type: 'text',
+            res: value
+            }
+        })
+
+        const fillInput = inputStruct.filter(value => value != null)
+
+        editFields.value = fillInput
+        
+        toggler.value = true
+}
+
+function handleToggle(){
+    toggler.value = true
+
+    // Revert back to Add mode
+    editFields.value = null
+    editId.value = null
+}
 
 </script>
 
@@ -94,28 +150,12 @@ function formClose(){
     <div>
         <div>
             <!-- shared admin form -->
-            <Modal v-if="toggler" :fields="fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
-                <div class="mt-3">
-                    <select v-model="moduleId" class="p-2 border">
-                        <option v-for="module in availableModules" :value="module.id">{{ module.module_title }}</option>
-                    </select>
-                </div>
-            </Modal>
+            <Modal v-if="toggler" :fields="editFields || fields" @update="updateField" @close="formClose"  @submit="formSubmit" ></Modal>
         </div>
         <div :class="[toggler ? 'blur' : '']">
-            <div>
-                <button @click="toggler = !toggler" class="bg-blue-500 py-2 text-white block col-start-2 ms-auto w-[200px] rounded">Add project</button>
-                <div class="flex gap-2 mt-4">
-                    <input class="px-4 py-2 rounded-sm flex-1" placeholder="Enter project Title" type="text"/>
-                    <button class="px-4 py-2 bg-yellow-500 text-white rounded">Search</button>
-                </div>
-                <select class="px-4 py-2 mt-2 border rounded-sm">
-                    <option>Latest</option>
-                    <option>Active</option>
-                    <option>Inactive</option>
-                </select>
-            </div>
-            <Table @delete="handleDelete" :items="allProject"/>
+            <Table @edit="handleEdit" @delete="handleDelete" :items="allProject">
+                <button :edit="editId" @click="handleToggle" class="bg-blue-500 ms-auto py-2 text-white block col-start-2 w-[100px] rounded"><i class="ri-add-line"></i>Add Project</button>
+            </Table>
         </div>
     </div>
 </template>
@@ -123,9 +163,3 @@ function formClose(){
 <style scoped>
 
 </style>
-
-
-
-
-
-

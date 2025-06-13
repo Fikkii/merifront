@@ -4,6 +4,8 @@
     import axios from 'axios'
     import { useToast } from 'vue-toastification'
 
+    import QuickBar from "../../components/dashboard/QuickBar.vue"
+
     import ModuleList from '../../components/ModuleList.vue'
 
     const toast = useToast()
@@ -32,7 +34,7 @@ async function fetchCourse() {
     console.error('Caught error:', e);
   }
 }
-    
+
 
 async function fetchUserCourse() {
   try {
@@ -41,7 +43,6 @@ async function fetchUserCourse() {
     if (res.status == 200) {
         const data = await res.data
         currentCourse.value = data.course
-        console.log(data)
     }
   } catch (e) {
     console.error('Caught error:', e);
@@ -65,37 +66,40 @@ async function fetchDetails(){
 </script>
 
 <template>
-    <div v-if="currentCourse" class="max-w-4xl mx-auto px-4 py-8">
-        <ModuleList />
-    </div>
-
-    <div v-else class="mt-3">
-        <h2 class="text-2xl font-bold mb-6 text-center">Pick a Category</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <label
-                v-for="course in availableCourse"
-                :key="course.id"
-                class="flex items-center justify-between gap-4 p-4 rounded-2xl border cursor-pointer transition-all duration-200
-                hover:border-blue-400 hover:bg-blue-50
-                "
-                :class="selectedCourse === course.id ? 'bg-blue-100 border-blue-500 shadow-md' : 'bg-white border-gray-300'"
-                >
-                <!-- Left: Radio + Label -->
-                <div class="flex items-center gap-3 text-left">
-                    <input
-                    type="radio"
-                    :value="course.id"
-                    name="course"
-                    v-model="selectedCourse"
-                    class="form-radio text-blue-600 h-5 w-5"
-                    />
-                    <span class="text-sm sm:text-base font-medium text-gray-800">
-                        {{ course.title }}
-                    </span>
-                </div>
-            </label>
+    <div>
+        <QuickBar />
+        <div v-if="currentCourse" class="py-8">
+            <ModuleList />
         </div>
-        <PaystackButton :course="selectedCourse" :email="email" :amount="selectedCourseAmount">Enroll</PaystackButton>
+
+        <div v-else class="mt-3">
+            <h2 class="text-2xl font-bold mb-6 text-center">Pick a Category</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <label
+                        v-for="course in availableCourse"
+                        :key="course.id"
+                        class="flex items-center justify-between gap-4 p-4 rounded-2xl border cursor-pointer transition-all duration-200
+                               hover:border-blue-400 hover:bg-blue-50
+                               "
+                        :class="selectedCourse === course.id ? 'bg-blue-100 border-blue-500 shadow-md' : 'bg-white border-gray-300'"
+                        >
+                        <!-- Left: Radio + Label -->
+                    <div class="flex items-center gap-3 text-left">
+                        <input
+                                type="radio"
+                                :value="course.id"
+                                name="course"
+                                v-model="selectedCourse"
+                                class="form-radio text-blue-600 h-5 w-5"
+                                />
+                        <span class="text-sm sm:text-base font-medium text-gray-800">
+                            {{ course.title }}
+                        </span>
+                    </div>
+                </label>
+            </div>
+            <PaystackButton :course="selectedCourse" :email="email" :amount="selectedCourseAmount">Enroll</PaystackButton>
+        </div>
     </div>
 </template>
 

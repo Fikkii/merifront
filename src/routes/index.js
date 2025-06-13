@@ -1,25 +1,24 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useUserStore } from "../store/user";
 import axios from 'axios'
 
 const routes = [
     {
         path: '/dashboard',
         component: () => import('../layouts/DashboardLayout.vue'),
-        meta: { requiresAuth: true },
-        beforeEnter: async ( to, from ) => {
+        meta: { requiresAuth: true, permission: ['student.manage', 'admin.manage'] },
+        beforeEnter: () => {
+            const userStore = useUserStore()
+            //set default values for axios
             const url = import.meta.env.VITE_API_URL
-            const token = localStorage.getItem('jwt-token') || null
-            const role = localStorage.getItem('user-role') || null
+            const token = userStore.token
 
-            //set backend api
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
             axios.defaults.baseURL = url
 
+            // If user is not logged in, redirect to login page
             if( !token ){
                 return { name: 'login' }
-            }
-            if(role == 'admin'){
-                return { name: 'admin-home' }
             }
         },
         children: [
@@ -44,6 +43,12 @@ const routes = [
                 component: () => import('../pages/dashboard/ProfilePage.vue'),
             },
             {
+                path: 'project/:id',
+                name: 'project',
+                props: true,
+                component: () => import('../pages/dashboard/ProjectPage.vue'),
+            },
+            {
                 path: 'topic/:id',
                 name: 'topic',
                 props: true,
@@ -54,17 +59,27 @@ const routes = [
                 name: 'learning',
                 component: () => import('../pages/dashboard/LearningPage.vue'),
             },
+            {
+                path: 'peer',
+                name: 'peer',
+                component: () => import('../pages/dashboard/PeerPage.vue'),
+            },
         ]
     },
     {
         path: '/admin',
         component: () => import('../layouts/AdminLayout.vue'),
-        beforeEnter: ( to, from ) => {
+        meta: { requiresAuth: true, permission: ['admin.manage'] },
+        beforeEnter: () => {
+            const userStore = useUserStore()
+            //set default values for axios
             const url = import.meta.env.VITE_API_URL
-            const token = localStorage.getItem('jwt-token') || null
-            const user_role = localStorage.getItem('user-role') || null
+            const token = userStore.token
+
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
             axios.defaults.baseURL = url
+
+            // If user is not logged in, redirect to login page
             if( !token ){
                 return { name: 'login' }
             }
@@ -144,7 +159,16 @@ const routes = [
                 ]
             },
         ]
-    }
+    },{
+        path: '/unauthorized',
+        component: () => import('../pages/Unauthorized.vue'),
+    },
+    // Catch-all route for 404s
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+        component: () => import('../pages/NotFound.vue'),
+    },
 ]
 
 export const router = createRouter({

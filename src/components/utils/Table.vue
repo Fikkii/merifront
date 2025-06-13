@@ -3,6 +3,7 @@ import { computed, ref, defineEmits, watch } from 'vue'
 
 const emits = defineEmits(['delete', 'edit'])
 
+
 const props = defineProps({
   items: {
     type: Array,
@@ -11,14 +12,15 @@ const props = defineProps({
   }
 })
 
+const items = computed(() => props.items)
+
 const searchInput = ref(null)
 const filteredData = ref(null)
 
-watch(searchInput, (newVal) => {
+watch(() => searchInput, (newVal) => {
     filteredData.value = props.items.filter(value => { 
         return value.title.toLowerCase().includes(searchInput.value.toLowerCase())
     })
-    console.log(filteredData.value)
 })
 
 const actions = [
@@ -74,6 +76,11 @@ function handleClick(e, id, action){
                 <option>Inactive</option>
             </select>
         </div>
+    </div>
+
+    <!-- slot -->
+    <div class="mb-3">
+        <slot />
     </div>
 
 <!-- Responsive Table Wrapper -->

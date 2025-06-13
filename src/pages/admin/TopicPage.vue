@@ -1,17 +1,17 @@
 <script setup>
     import Modal from '../../components/admin/Modal.vue'
     import ToastEditor from '../../components/ToastEditor.vue'
-    import { ref, onMounted, onUpdated } from 'vue'
+    import { ref, onMounted, nextTick, onUpdated } from 'vue'
 
     import { useToast } from 'vue-toastification'
 
     //import controllers to fetch data
-    import { fetchTopics, fetchModules } from '../../controllers/controller.js'
+    import { fetchTopics, fetchCourses } from '../../controllers/controller.js'
 
     import axios from 'axios'
 
     const availableTopics = ref([])
-    const availableModules = ref([])
+    const availables = ref([])
     const moduleId = ref([])
     const content = ref('')
     const toggler = ref( false )
@@ -20,14 +20,13 @@
 
     const toastRef = ref(null)
 
-    onMounted(async () => { availableTopics.value = await fetchTopics(); availableModules.value = await fetchModules() })
+    // This stores the edit id and sets the mode accordingly...
+    const editId = ref(null)
 
-async function handleDelete(id){
-    const res = axios.delete(`/api/admin/topics/${id}`)
-    availableTopics.value = await fetchTopics();
-    availableModules.value = await fetchModules(); 
-}
+    // Text fields
+    const editFields = ref(null) // This handles text field when edit mode is on
 
+    // Regular text field
     const fields = ref([
     {
         name: 'title',
@@ -36,34 +35,34 @@ async function handleDelete(id){
     },
     {
         name: 'moduleId',
-        placeholder: 'Enter topic Title',
+        placeholder: 'Enter module ID',
         res: '',
         type: 'select',
         options: {}
     },
+    {
+        name: 'recommended_video',
+        placeholder: 'Enter Recommended Video link',
+        res: '',
+    },
     ])
 
-async function handleEdit(id, topic_id){
-    const res = await axios.put('/api/admin/topics', {
-        id: id,
-        moduleId: module_id,
-        title: fields.value[0].res,
-        order: fields.value[1].res,
-    })
+
+    onMounted(async () => { availableTopics.value = await fetchTopics(); availables.value = await fetchModules() })
+
+async function handleDelete(id){
+    const res = axios.delete(`/api/admin/topics/${id}`)
     availableTopics.value = await fetchTopics();
-    availableModules.value = await fetchModules(); 
+    availables.value = await fetchModules(); 
 }
 
 function getMarkdown(message){
     content.value = message
 }
 
-function updateField(index, value){
-fields.value[index].res = value
-}
-
 async function formSubmit(formData){
-try{
+    
+    // Get markdown content and append it form
     if(toastRef.value){
         content.value = toastRef.value.saveContent()
     }
@@ -71,33 +70,93 @@ try{
     formData.append('content', content.value)
     const jsonData = Object.fromEntries(formData)
 
-    const res = await axios.post('/api/admin/topics', jsonData, {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
+    try{
+        // check for editId and if not create a new topic
+        if(!editId.value){
 
-    toggler.value = !toggler.value
-    toast.success('Topic Created Successfully...')
-}catch(e){
-console.log(e)
-    toast.error(e.response.data.error)
-}
-    availableTopics.value = await fetchTopics();
-    availableModules.value = await fetchModules(); 
+            const res = await axios.post('/api/admin/topics', jsonData, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            toast.success('Topic Created Successfully...')
+        }else{
+            const res = await axios.put(`/api/admin/topics/${editId.value}`, jsonData, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            
+            toast.success('Topic Edited Successfully...')
+        }
+        toggler.value = !toggler.value
+
+    }catch(e){
+        console.log(e)
+    }finally{
+        availableTopics.value = await fetchTopics();
+        availables.value = await fetchModules(); 
+    }
 }
 
 function formClose(){
     toggler.value = false
 }
 
+function updateField(index, value){
+    if(editId.value){
+        editFields.value[index].res = value
+    }else{
+        fields.value[index].res = value
+    }
+}
+
+async function handleEdit(id='1'){
+        //Edit mode is active
+        editId.value = id
+
+        const data = await axios.get(`/api/topics/${id}`)
+
+        const inputStruct = Object.entries(data.data).map(([key, value]) => {
+            const exclude = ['id', 'topic_content', 'module_title', 'course_title']
+            if(exclude.includes(key)){
+                return null
+            }
+
+            return {
+            name: key,
+            placeholder: 'No placeholder',
+            type: 'text',
+            res: value
+            }
+        })
+
+        const fillInput = inputStruct.filter(value => value != null)
+
+
+        editFields.value = fillInput
+        
+        toggler.value = true
+        await nextTick()
+        toastRef.value.setContent(data.data.topic_content)
+}
+
+
+function handleToggle(){
+    toggler.value = true
+
+    // Revert back to Add mode
+    editFields.value = null
+    editId.value = null
+}
 
 </script>
 
 <template>
     <div class="relative">
         <div>
-            <Modal v-if="toggler" :fields="fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
+            <Modal v-if="toggler" :fields="editFields || fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
             <!-- The markdown editor stays here -->
             <div class="col-span-2">
                 <ToastEditor ref="toastRef" />
@@ -105,8 +164,9 @@ function formClose(){
             </Modal>
         </div>
         <div :class="[toggler ? 'blur' : '']">
-            <button @click="toggler = !toggler" class="bg-blue-500 py-2 text-white block col-start-2 ms-auto w-[200px] rounded">Add topic</button>
-            <CategorizedTable @delete="handleDelete" :items="availableTopics" />
+            <CategorizedTable @edit="handleEdit" @delete="handleDelete" :items="availableTopics" >
+                <button :edit="editId" @click="handleToggle" class="bg-blue-500 ms-auto py-2 text-white block col-start-2 w-[100px] rounded"><i class="ri-add-line"></i>Add Topic</button>
+            </CategorizedTable>
         </div>
     </div>
 </template>

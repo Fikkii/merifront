@@ -12,14 +12,30 @@ import { createPinia } from 'pinia'
 
 const pinia = createPinia()
 
+import { useUserStore } from './store/user'
+import { hasPermission } from './controllers/permissions'
+
 import { router } from './routes/index'
 
+router.beforeEach((to, from, next) => {
+    const userStore = useUserStore()
+
+    //Check if user has permission to access page...
+    const requiredPermission = to.meta.permission
+
+    if (!requiredPermission || hasPermission(userStore.role, requiredPermission)) {
+        next()
+    } else {
+        next('/unauthorized')
+    }
+})
+
 const app = createApp(App)
-    app.component('Dropdown', Dropdown)
-    app.component('Table', Table)
-    app.component('CategorizedTable', CategorizedTable)
-    app.component('Card', Card)
-    app.use(pinia)
+app.component('Dropdown', Dropdown)
+app.component('Table', Table)
+app.component('CategorizedTable', CategorizedTable)
+app.component('Card', Card)
+app.use(pinia)
     .use(router)
     .use(Toast, {
         position: POSITION.TOP_RIGHT,

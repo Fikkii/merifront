@@ -149,7 +149,7 @@ async function fetchTransactions() {
             <div class="mt-4">
                 <span class="text-indigo-500">Search Reference Number</span>
                 <div class="flex gap-2">
-                    <input v-model="refId" placeholder="Enter Reference Id" class="rounded p-2 flex-1" type="text"/>
+                    <input v-model="refId" placeholder="Enter Reference Id" class="rounded bg-blue-100 border border-gray-300 shadow p-2 flex-1" type="text"/>
                     <button @click="handleFilter" class="p-2 md:w-30 rounded shadow-lg bg-indigo-500 text-white">Search</button>
                 </div>
             </div>

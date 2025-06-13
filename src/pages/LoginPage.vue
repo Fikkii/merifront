@@ -3,6 +3,8 @@
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 
+import { useUserStore } from '../store/user.js'
+
 import GoogleSigninButton from '../components/GoogleSigninButton.vue'
 
 const toast = useToast()
@@ -21,10 +23,22 @@ const router = useRouter()
 
 function handleGoogleOauth(data){
     if(data.token){
+      // Get user pinia store and save token and role
+      const store = useUserStore()
+      store.setToken(data.token)
+      store.setRole(data.user.role)
+
       localStorage.setItem('jwt-token', data.token);
       localStorage.setItem('user-role', data.user.role);
       toast.success('Login Successfull.')
-      router.push({ name: 'dashboard-home' })
+
+      //proper redirection after login based on role
+      if(data.user.role == 'admin'){
+        router.push({ name: 'dashboard-home' })
+      }else{
+        router.push({ name: 'dashboard-home' })
+      }
+
     }else{
       toast.error('Unable to login')
     }
@@ -83,6 +97,9 @@ async function handleLogin() {
     const data = await response.json();
 
     if (response.ok) {
+      const store = useUserStore()
+      store.setToken(data.token)
+      store.setRole(data.user.role)
       localStorage.setItem('jwt-token', data.token);
       localStorage.setItem('user-role', data.user.role);
       toast.success('Login Successfull.')

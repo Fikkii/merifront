@@ -37,6 +37,14 @@ onBeforeUnmount(() => {
   editorInstance?.destroy()
 })
 
+function setContent(content) {
+  // This function will help set markdown content in an update scenario
+  if (editorInstance) {
+    editorInstance.setMarkdown(content)
+  }
+}
+
+
 function saveContent() {
   if (editorInstance) {
     const markdown = editorInstance.getMarkdown()
@@ -47,9 +55,7 @@ function saveContent() {
   }
 }
 
-defineExpose({
-    saveContent, content
-})
+defineExpose({ setContent, saveContent })
 
 </script>
 

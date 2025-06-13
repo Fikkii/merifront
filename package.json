@@ -20,7 +20,7 @@
     "highlight.js": "^11.11.1",
     "juice": "^11.0.1",
     "marked": "^15.0.12",
-    "pinia": "^3.0.2",
+    "pinia": "^3.0.3",
     "prismjs": "^1.30.0",
     "remixicon": "^4.6.0",
     "tailwindcss": "^4.1.7",

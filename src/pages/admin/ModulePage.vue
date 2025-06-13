@@ -17,6 +17,9 @@
 
     const toast = useToast()
 
+    // to store edit id...
+    const editId = ref(null)
+
     onMounted(async () => {
     availableModules.value = await fetchModules();
     console.log(availableModules.value)
@@ -37,17 +40,45 @@
         type: 'select',
         options: {}
     },
+    {
+        name: 'active',
+        placeholder: '0 = Not Active, 1 = Active',
+        res: '',
+        type: 'number',
+    },
     ])
 
-async function handleEdit(id, course_id){
-    const res = await axios.put('/api/admin/modules', {
-        id: id,
-        courseId: course_id,
-        title: fields.value[0].res,
-        order: fields.value[1].res,
-    })
-    availableModules.value = await fetchModules()
+    const editFields = ref(null)
+
+async function handleEdit(id='1'){
+        //Edit mode is active
+        editId.value = id
+
+        const data = await axios.get(`/api/modules/${id}`)
+
+        const inputStruct = Object.entries(data.data).map(([key, value]) => {
+            const exclude = ['id', 'cover_img_url']
+            if(exclude.includes(key)){
+                return null
+            }
+
+            return {
+            name: key,
+            placeholder: 'No placeholder',
+            type: 'text',
+            res: value
+            }
+        })
+
+        const fillInput = inputStruct.filter(value => value != null)
+
+        editFields.value = fillInput
+        
+        toggler.value = true
+
+        availableCourse.value = await fetchCourses()
 }
+
 
 async function handleDelete(id){
     const res = axios.delete(`/api/admin/modules/${id}`)
@@ -55,29 +86,56 @@ async function handleDelete(id){
 }
 
 function updateField(index, value){
-fields.value[index].res = value
+if(editId.value){
+    editFields.value[index].res = value
+}else{
+    fields.value[index].res = value
+}
+}
+
+function handleToggle(){
+    toggler.value = true
+
+    // Revert back to Add mode
+    editFields.value = null
+    editId.value = null
 }
 
 async function formSubmit(formData){
-const jsonData = Object.fromEntries(formData)
-try{
-    const res = await axios.post('/api/admin/modules', jsonData, {
-        headers: {
-            "Content-Type": 'application/json'
-        }
-    })
+    const jsonData = Object.fromEntries(formData)
+    try{
+        if(!editId.value){
+                const res = await axios.post('/api/admin/modules', jsonData, {
+                    headers: {
+                        "Content-Type": 'application/json'
+                    }
+                })
 
-    if(res.status !== 201){
-        throw new Error('Unable to create Module')
+                if(res.status !== 201){
+                    throw new Error('Unable to create Module')
+                    toast.error('Unable to create Module...')
+                }
+
+                editId.value = null
+        }else{
+            const res = await axios.put(`/api/admin/modules/${editId.value}`, jsonData, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            
+
+            toast.success('Module Edited Successfully...')
+
+        }
+    }catch(e){
+        console.log(e)
         toast.error('Unable to create Module...')
+    } finally {
+        toggler.value = false
+        availableModules.value = await fetchModules()
     }
 
-    toggler.value = false
-    toast.success('Module Created Successfully...')
-    availableModules.value = await fetchModules()
-}catch(e){
-    toast.error('Unable to create Module...')
-}
 }
 
 function formClose(){
@@ -89,12 +147,12 @@ function formClose(){
 <template>
     <div>
         <div>
-            <Modal v-if="toggler" :fields="fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
-            </Modal>
+            <Modal v-if="toggler" :fields="editFields || fields" @update="updateField" @close="formClose" :edit="editId"  @submit="formSubmit" ></Modal>
         </div>
         <div :class="[toggler ? 'blur' : '']">
-            <button @click="toggler = !toggler" class="bg-blue-500 py-2 text-white block col-start-2 ms-auto w-[200px] rounded">Add module</button>
-            <CategorizedTable @delete="handleDelete" :items="availableModules" /> 
+            <CategorizedTable @edit="handleEdit" @delete="handleDelete" :items="availableModules" > 
+                <button @click="handleToggle" class="bg-blue-500 ms-auto py-2 text-white block col-start-2 w-[100px] rounded"><i class="ri-add-line"></i>Add Module</button>
+            </CategorizedTable> 
         </div>
     </div>
 </template>
