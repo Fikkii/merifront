@@ -31,6 +31,7 @@ function handleNotPaired(){
 
 <template>
   <div v-if="peerGroup" class="p-4 md:p-8 max-w-4xl mx-auto">
+      <button @click="router.go(-1)" class="text-indigo-500 px-[20px] py-[12px] font-bold rounded"><i class="ri-arrow-left-line"></i>Go Back</button>
     <!-- Peer Group Header -->
     <div class="mb-6 bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-6 rounded-xl shadow-lg">
       <h2 class="text-2xl font-bold">Peer Group: {{ peerGroup.name }}</h2>

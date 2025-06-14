@@ -13,7 +13,7 @@
                     <i class="fas" :class="[icon || 'fa-users']"></i>
             </div>
         <div>
-            <h3 class="text-2xl font-bold text-gray-800">{{ total }}</h3>
+            <h3 class="text-xl font-bold text-gray-800">{{ total }}</h3>
             <p class="text-gray-500">{{ title }}</p>
         </div>
     </div>

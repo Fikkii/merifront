@@ -20,11 +20,6 @@ import { ref } from 'vue'
 
 const actions = [
 {
-    title: 'projects',
-    handler: 'handleProject',
-    icon: 'ri-briefcase-line'
-},
-{
     title: 'Peer Group',
     link: 'peer',
     icon: 'ri-user-community-line'

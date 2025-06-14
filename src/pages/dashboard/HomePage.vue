@@ -13,7 +13,7 @@ const error = ref('');
 const cards = ref([]);
 const expanded = ref([]);
 
-const currentCourse = ref('');
+const metric = ref('');
 
 const toggleExpanded = (index) => {
   expanded.value[index] = !expanded.value[index];
@@ -31,7 +31,7 @@ const getMetrics = async () => {
     const res = await axios.get(`/api/student/metrics`);
 
       const data = await res.data;
-      currentCourse.value = data.title
+      metric.value = data
 
       if (res.status !== 200) {
         throw new Error(data.error || 'API Error');
@@ -82,11 +82,11 @@ const getRecommendations = async (genre) => {
             <p>This is your progress so far, Keep up the pace by completing some topics today</p>
         </div>
         <div class="grid md:grid-cols-3 gap-2 ">
-            <Card icon="fa-calendar" title="Attendance" total="0"/>
-            <Card icon="fa-briefcase" title="Project Completed" total="0"/>
-            <Card icon="ri-progress-3-line" title="Meri Score" total="0"/>
+            <Card icon="fa-calendar" title="Topic Completed" total="0"/>
+            <Card icon="fa-briefcase" title="Project Completed" :total="metric.total_evaluation"/>
+            <Card icon="ri-progress-3-line" title="Meri Score" :total="metric.average_score"/>
         </div>
-        <DescButton title="Current Course:" :desc="currentCourse || 'Click Continue to Enroll in a course'" to="learning" class="bg-blue-100"/>
+        <DescButton title="Current Course:" :desc="metric.course || 'Click Continue to Enroll in a course'" to="learning" class="bg-blue-100"/>
         <DescButton title="Learning with AI" desc="Partner up with AI" to="chat" class="bg-orange-100">
         <i class="ri-chat-ai-line"></i>
         </DescButton>

@@ -1,6 +1,9 @@
 <script setup>
 import { defineEmits, onMounted } from 'vue'
 
+//preloader gif
+import loader from '../../assets/loader.gif'
+
 //import controllers for data fetching
 import { fetchCourses, fetchModules } from '../../controllers/controller.js'
 const props = defineProps(['fields', 'edit'])
@@ -15,10 +18,11 @@ function handleClose(){
     emit('close', true)
 }
 
-function handleSubmit(){
+function handleSubmit(e){
     const formData = new FormData()
     props.fields.forEach(value => formData.append(value.name, value.res))
     console.log(formData)
+    e.target.innerHTML = `<img width="20" src="${loader}">`
     emit('submit', formData)
 }
 
@@ -104,7 +108,7 @@ onMounted(() => {
                                 @click.prevent="handleSubmit"
                                 class="bg-indigo-500 text-white px-5 py-2 rounded hover:bg-indigo-600 transition"
                                 >
-                                {{ edit ? 'Edit' : 'Add' }}
+                                {{ edit ? 'Edit' : 'Submit' }}
                         </button>
                             <button
                                     @click.prevent="handleClose"

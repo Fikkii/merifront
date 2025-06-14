@@ -41,7 +41,7 @@ async function fetchProfile() {
 async function handleUpdate() {
   isLoading.value = true
   try {
-    const response = await axios.put('/api/student/me', { fullname: fullname.value, email: email.value, password: password.value })
+    const response = await axios.put('/api/student/me', { fullname: fullname.value, email: email.value})
 
 
     if (response.status == 200) {
@@ -70,14 +70,15 @@ async function handleUpdate() {
         </div>
 
         <!-- Login Form -->
-        <form @submit.prevent="e => handleUpdate(e)" class="space-y-4 bg-blue-50 border-blue-500 p-6 rounded-lg shadow-2xl relative">
+        <form @submit.prevent="e => handleUpdate(e)" class="space-y-4 bg-white border-blue-500 p-6 rounded-lg shadow-2xl relative">
             <span class="text-lg">Update Profile</span>
             <div>
                 <label class="block mb-1 text-gray-700">Email</label>
                 <input
                 v-model="email"
                 type="email"
-                class="w-full px-4 py-2 border rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                disabled
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
             </div>
             <div>
@@ -85,18 +86,9 @@ async function handleUpdate() {
                 <input
                 v-model="fullname"
                 type="text"
-                class="w-full px-4 py-2 border rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
             </div>
-            <div>
-                <label class="block mb-1 text-gray-700">Password</label>
-                <input
-                v-model="password"
-                type="text"
-                class="w-full px-4 py-2 border rounded-md bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-            </div>
-
             <button
                 type="submit"
                 class="w-full flex gap-4 justify-center py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
