@@ -99,8 +99,21 @@ async function handlePairing(){
     if(req.data.groups){
         const noCreatedGroups = req.data.groups.length
         toast.success(`${noCreatedGroups} Pair Group have been created successfully`)
+        fetchStudent()
     }else{
         toast.error('Unable to create Pair Group, Not enough user')
+    }
+}
+
+
+async function handlePairingDelete(){
+    const req = await axios.delete('/api/peer')
+    
+    fetchStudent()
+    if(req.status == 201){
+        toast.success(`Pair Groups have been deleted successfully`)
+    }else{
+        toast.error('Unable to delete Pair Group')
     }
 }
 
@@ -162,13 +175,14 @@ async function handleEdit(id='1'){
             <Modal v-if="toggler" :fields="editFields || fields" @update="updateField" @close="formClose"  @submit="formSubmit" ></Modal>
         </div>
         <div :class="[toggler ? 'blur' : '']">
-            <div>
-                <div class="flex flex-wrap">
-                    <button @click="handlePairing" class="bg-green-500 py-2 text-white block col-start-2 w-[100px] rounded">Group Students</button>
-                </div>
-            </div>
             <Table @delete="handleDelete" @edit="handleEdit" :items="allStudent" >
-                <button @click="toggler = !toggler" class="bg-blue-500 ms-auto py-2 text-white block col-start-2 w-[100px] rounded"><i class="ri-add-line"></i>Add Student</button>
+                <div class="flex">
+                    <div class="flex flex-wrap gap-2">
+                        <button @click="handlePairing" class="bg-green-500 py-2 text-white block col-start-2 w-[100px] rounded">Assign Groups</button>
+                        <button @click="handlePairingDelete" class="bg-red-500 py-2 text-white block col-start-2 w-[100px] rounded">Delete Groups</button>
+                    </div>
+                    <button @click="toggler = !toggler" class="bg-blue-500 ms-auto py-2 text-white block col-start-2 w-[100px] rounded"><i class="ri-add-line"></i>Add Student</button>
+                </div>
             </Table>
         </div>
     </div>
