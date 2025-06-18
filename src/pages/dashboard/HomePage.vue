@@ -2,6 +2,7 @@
     import QuizCard from '../../components/QuizCard.vue'
     import TodoCard from '../../components/TodoCard.vue'
     import DescButton from '../../components/dashboard/DescButton.vue'
+    import ProgressBar from '../../components/ProgressBar.vue'
 
 import EbookRecommender from '../../components/EbookRecommender.vue'
 import axios from 'axios'
@@ -81,15 +82,24 @@ const getRecommendations = async (genre) => {
             <h3 class="font-bold text-lg">Welcome Back, User</h3>
             <p>This is your progress so far, Keep up the pace by completing some topics today</p>
         </div>
-        <div class="grid md:grid-cols-3 gap-2 ">
-            <Card icon="fa-calendar" title="Topic Completed" total="0"/>
-            <Card icon="fa-briefcase" title="Project Completed" :total="metric.total_evaluation"/>
-            <Card icon="ri-progress-3-line" title="Meri Score" :total="metric.average_score"/>
+        <div class="flex flex-col md:grid md:grid-cols-6 gap-3">
+            <div class="col-span-4 flex flex-col gap-2 justify-between">
+                <div class="grid md:grid-cols-2 gap-2">
+                    <Card icon="fa-calendar" title="Topic Completed" total="0"/>
+                    <Card icon="fa-briefcase" title="Project Completed" :total="metric.total_evaluation || 0"/>
+                </div>
+
+                <DescButton title="Current Course:" :desc="metric.course || 'Click Continue to Enroll in a course'" to="learning" class="bg-blue-100"/>
+                <DescButton title="Learning with AI" desc="Partner up with AI" to="chat" class="bg-orange-100">
+                <i class="ri-chat-ai-line"></i>
+                </DescButton>
+            </div>
+            <div class="bg-white rounded p-4 shadow flex flex-col gap-3 justify-center items-center col-span-2">
+                <h2 class="font-bold text-md self-start">Your MeriScore</h2>
+                <ProgressBar class="h-35" :percentage="metric.average_score" />
+                <span><i class="ri-golf-ball-fill text-orange-500"></i>Project Completed</span>
+            </div>
         </div>
-        <DescButton title="Current Course:" :desc="metric.course || 'Click Continue to Enroll in a course'" to="learning" class="bg-blue-100"/>
-        <DescButton title="Learning with AI" desc="Partner up with AI" to="chat" class="bg-orange-100">
-        <i class="ri-chat-ai-line"></i>
-        </DescButton>
         <div class="mt-10">
             <h2 class="font-semibold text-lg">Personal Development...</h2>
             <TodoCard />

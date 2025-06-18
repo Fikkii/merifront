@@ -81,8 +81,8 @@ async function handleEdit(id='1'){
 
 
 async function handleDelete(id){
-    const res = axios.delete(`/api/admin/modules/${id}`)
-     availableModules.value = await fetchModules()
+    const res = await axios.delete(`/api/admin/modules/${id}`)
+    availableModules.value = await fetchModules()
 }
 
 function updateField(index, value){

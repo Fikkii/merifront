@@ -2,6 +2,8 @@
 import { ref, onMounted, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 
+import { useUserStore } from '../../store/user.js'
+
 const props = defineProps({
     state: {
         type: Boolean,
@@ -14,6 +16,8 @@ const toggle = ref(props.state)
 watch(() => props.state, (newVal) => {
     toggle.value = newVal
 })
+
+const userStore = useUserStore()
 
 const dynamicLink = ref([])
 const role = localStorage.getItem('user-role')
@@ -34,13 +38,13 @@ onMounted(() => {
 
 const links = [
   { name: 'Home', link: 'admin-home', icon: 'ri-admin-line', role: ['instructor', 'admin', 'student'] },
-  { name: 'Courses', link: 'admin-courses', icon: 'ri-stack-line', role: ['instructor', 'admin', 'student'] },
-  { name: 'Modules', link: 'admin-modules', icon: 'ri-git-repository-line', role: ['instructor', 'admin', 'student'] },
-  { name: 'Projects', link: 'admin-projects', icon: 'ri-briefcase-3-line', role: ['instructor', 'admin', 'student'] },
-  { name: 'Topics', link: 'admin-topics', icon: 'ri-book-shelf-line', role: ['instructor', 'admin', 'student'] },
-  { name: 'Students', link: 'admin-students', icon: 'ri-group-3-line', role: ['instructor', 'admin', 'student'] },
-  { name: 'Broadcast', link: 'admin-broadcasts', icon: 'ri-broadcast-line', role: ['instructor', 'admin', 'student'] },
-  { name: 'Transactions', link: 'admin-transactions', icon: 'ri-visa-line', role: ['instructor', 'admin', 'student'] }
+  { name: 'Courses', link: 'admin-courses', icon: 'ri-stack-line', role: ['admin'] },
+  { name: 'Modules', link: 'admin-modules', icon: 'ri-git-repository-line', role: ['instructor', 'admin'] },
+  { name: 'Projects', link: 'admin-projects', icon: 'ri-briefcase-3-line', role: ['instructor', 'admin'] },
+  { name: 'Topics', link: 'admin-topics', icon: 'ri-book-shelf-line', role: ['instructor', 'admin'] },
+  { name: 'Students', link: 'admin-students', icon: 'ri-group-3-line', role: ['admin'] },
+  { name: 'Broadcast', link: 'admin-broadcasts', icon: 'ri-broadcast-line', role: ['admin'] },
+  { name: 'Transactions', link: 'admin-transactions', icon: 'ri-visa-line', role: ['admin'] }
 ]
 </script>
 
@@ -49,7 +53,7 @@ const links = [
     <!-- Sidebar -->
     <nav
       :class="[
-        'bg-gradient-to-br from-indigo-500 to-purple-700 text-white shadow-xl overflow-hidden transition-width duration-300 ease-in-out',
+        'bg-gradient-to-br from-black to-purple-700 text-white shadow-xl overflow-hidden transition-width duration-300 ease-in-out',
         toggle ? 'w-50 md:w-64' : 'w-0'
       ]"
       aria-label="Sidebar Navigation"
@@ -57,7 +61,7 @@ const links = [
       <!-- Sidebar content only rendered when open -->
       <div v-if="toggle" class="p-5 border-b border-white/10">
         <h2 class="text-2xl font-semibold flex items-center">
-          <i class="fas fa-graduation-cap text-yellow-300 mr-2"></i>
+            <img src="../../assets/logo.png" width="40" alt="">
           Merilearn
         </h2>
       </div>
@@ -66,10 +70,11 @@ const links = [
         <li v-for="link in dynamicLink" :key="link.link">
           <RouterLink @click="routerToggle"
             :to="{ name: link.link }"
+            v-if="link.role.includes(userStore.role)"
             class="flex items-center px-5 py-3 text-white/80 hover:text-white hover:bg-white/10 transition-all border-l-4 border-transparent"
             :class="{ 'bg-white/10 text-white border-yellow-400': $route.name === link.link }"
           >
-            <i class="fas fa-tachometer-alt w-5 text-center mr-3"></i>
+            <i :class="[link.icon]" class="w-5 text-center mr-3"></i>
             {{ link.name }}
           </RouterLink>
         </li>

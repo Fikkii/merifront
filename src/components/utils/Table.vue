@@ -3,6 +3,8 @@ import { computed, ref, defineEmits, watch } from 'vue'
 
 const emits = defineEmits(['delete', 'edit'])
 
+//preloader gif
+import loader from '../../assets/loader.gif'
 
 const props = defineProps({
   items: {
@@ -15,13 +17,26 @@ const props = defineProps({
 const items = computed(() => props.items)
 
 const searchInput = ref(null)
+const filterBox = ref(null)
+
 const filteredData = ref(null)
 
-watch(() => searchInput, (newVal) => {
+watch(() => searchInput.value, (newVal) => {
     filteredData.value = props.items.filter(value => { 
+        if(filterBox.value){
+            return value[filterBox.value].toLowerCase().includes(searchInput.value.toLowerCase())
+        }
+
         return value.title.toLowerCase().includes(searchInput.value.toLowerCase())
     })
 })
+
+const truncate = (text, length=80) => {
+    if(!text){
+        return text
+    }
+  return text.length > length ? text.slice(0, length) + '...' : text;
+};
 
 const actions = [
 {
@@ -61,6 +76,16 @@ function handleClick(e, id, action){
         default:
             console.log("Action is not available")
     }
+
+    e.currentTarget.innerHTML += `<img class="absolute top-1 z-index left-1" width="20" id="loader" src="${loader}">`
+
+// Remove after 3 seconds
+  setTimeout(() => {
+    const temp = document.getElementById('loader');
+    if (temp) {
+      temp.remove(); // or temp.parentNode.removeChild(temp)
+    }
+  }, 5000);
 }
 </script>
 
@@ -69,11 +94,9 @@ function handleClick(e, id, action){
         <label class="font-bold text-lg">Search</label>
         <div class="flex gap-2">
             <input v-model="searchInput" class="px-2 py-1 md:px-6 rounded md:py-4 shadow bg-white outline-none flex-1" placeholder="Enter Title" type="text"/>
-            <select class="px-2 py-2 md:px-6 md:py-4 mt-2 shadow bg-white outline-none  rounded-sm">
+            <select v-model="filterBox" class="px-2 py-2 md:px-6 md:py-4 mt-2 shadow bg-white outline-none  rounded-sm">
                 <option disabled selected>Filter</option>
-                <option>Latest</option>
-                <option>Active</option>
-                <option>Inactive</option>
+                <option v-for="(col, index) in columns">{{ col }}</option>
             </select>
         </div>
     </div>
@@ -111,10 +134,10 @@ function handleClick(e, id, action){
           :key="colIndex"
           class="px-4 py-3 text-sm text-gray-800 whitespace-nowrap border-b border-gray-100"
         >
-          {{ row[key] }}
+            {{ truncate(row[key]) }}
         </td>
         <td class="px-4 py-3 flex gap-1 items-center">
-            <button @click="(e) => handleClick(e, row.id, action.action)" v-for="action in actions" :class="[action.hover == 'blue' ? 'hover:bg-indigo-500': 'hover:bg-red-500', 'hover:text-white']" class="text-gray-600 p-2 rounded bg-gray-50 hover:text-indigo-800 transition">
+            <button @click="(e) => handleClick(e, row.id, action.action)" v-for="action in actions" :class="[action.hover == 'blue' ? 'hover:bg-indigo-500': 'hover:bg-red-500', 'hover:text-white']" class="relative text-gray-600 p-2 rounded bg-gray-50 hover:text-indigo-800 transition">
             <i :class="action.icon"></i>
           </button>
         </td>

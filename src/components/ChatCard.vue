@@ -11,7 +11,7 @@
         :class="msg.role === 'user' ? 'justify-end' : 'justify-start'"
       >
         <div v-html="msg.content"
-          class="max-w-sm px-4 py-2 rounded-lg prose-sm"
+          class="max-w-sm px-3 py-2 rounded-lg prose-sm"
           :class="msg.role === 'user' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800 dark:bg-gray-800 dark:text-gray-100'"
         >
         </div>

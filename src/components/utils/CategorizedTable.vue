@@ -1,6 +1,9 @@
 <script setup>
 import { computed, ref, defineEmits } from 'vue';
 
+//preloader gif
+import loader from '../../assets/loader.gif'
+
 const emits = defineEmits(['delete', 'edit']);
 
 const props = defineProps({
@@ -12,6 +15,7 @@ const props = defineProps({
 });
 
 const searchInput = ref('');
+const filterBox = ref(null);
 
 function groupByCategory(data) {
   const grouped = {};
@@ -28,6 +32,10 @@ function groupByCategory(data) {
   }));
 }
 
+const truncate = (text, length = 80) => {
+  return text.length > length ? text.slice(0, length) + '...' : text;
+};
+
 const data = computed(() => groupByCategory(props.items));
 
 function filterDataByTitle(data, searchString) {
@@ -39,7 +47,7 @@ function filterDataByTitle(data, searchString) {
     .map(group => {
       const filteredItems = group.data.filter(item => {
         return Object.entries(item).some(([key, value]) => {
-          return key.endsWith('_title') && String(value).toLowerCase().includes(lowerSearch);
+          return key == filterBox.value && String(value).toLowerCase().includes(lowerSearch);
         });
       });
 
@@ -79,6 +87,16 @@ function handleClick(e, id, action) {
     default:
       console.log("Action is not available");
   }
+
+    e.currentTarget.innerHTML += `<img class="absolute top-1 z-index left-1" width="20" id="loader" src="${loader}">`
+
+// Remove after 3 seconds
+  setTimeout(() => {
+    const temp = document.getElementById('loader');
+    if (temp) {
+      temp.remove(); // or temp.parentNode.removeChild(temp)
+    }
+  }, 5000);
 }
 </script>
 
@@ -92,12 +110,9 @@ function handleClick(e, id, action) {
         placeholder="Enter Title"
         type="text"
       />
-      <select class="px-2 py-2 md:px-6 md:py-4 mt-2 shadow bg-white outline-none rounded-sm">
-        <option disabled selected>Filter</option>
-        <option>Latest</option>
-        <option>Active</option>
-        <option>Inactive</option>
-      </select>
+        <select v-model="filterBox" class="px-2 py-2 md:px-6 md:py-4 mt-2 shadow bg-white outline-none  rounded-sm">
+            <option v-for="(col, index) in columns" :key="index" selected>{{ col }}</option>
+        </select>
     </div>
   </div>
 
@@ -142,7 +157,7 @@ function handleClick(e, id, action) {
             :key="colIndex"
             class="px-4 py-3 text-sm text-gray-800 whitespace-nowrap border-b border-gray-100"
           >
-            {{ row[key] }}
+            {{ truncate(row[key], 40) }}
           </td>
           <td class="px-4 py-3 flex gap-1 items-center">
             <button
@@ -150,7 +165,7 @@ function handleClick(e, id, action) {
               :key="action.action"
               @click="(e) => handleClick(e, row.id, action.action)"
               :class="[action.hover === 'blue' ? 'hover:bg-indigo-500' : 'hover:bg-red-500', 'hover:text-white']"
-              class="text-gray-600 p-2 rounded bg-gray-50 hover:text-indigo-800 transition"
+              class="relative text-gray-600 p-2 rounded bg-gray-50 hover:text-indigo-800 transition"
             >
               <i :class="action.icon"></i>
             </button>

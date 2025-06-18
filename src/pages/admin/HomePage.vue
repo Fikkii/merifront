@@ -61,6 +61,9 @@ async function fetchTopics() {
 </script>
 
 <template>
+    <div class="text-right mb-2">
+        <RouterLink :to="{ name: 'dashboard-home' }" class="p-3 text-white inline-block bg-indigo-500 rounded ms-auto"><i class="ri-refresh-line"></i> Switch Role to Student </RouterLink>
+    </div>
     <StatsCard />
     <QuickActions />
     <div class="flex flex-col md:flex-row gap-8">

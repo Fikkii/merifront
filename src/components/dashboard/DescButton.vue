@@ -2,7 +2,7 @@
     defineProps(['title', 'desc', 'to'])
 </script>
 <template>
-    <div class="mt-3 flex justify-between items-center rounded px-8 py-4 shadow" :class="$attrs.class">
+    <div class="flex justify-between items-center rounded px-8 py-4 shadow" :class="$attrs.class">
         <div>
             <div class="font-bold">
                 <slot />

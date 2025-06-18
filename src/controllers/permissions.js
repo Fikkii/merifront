@@ -1,6 +1,7 @@
 // permissions.js
 export const rolePermissions = {
   admin: ['dashboard.view', 'course.edit', 'admin.manage'],
+  instructor: ['dashboard.view', 'course.edit', 'admin.manage'],
   student: ['dashboard.view', 'student.manage']
 }
 

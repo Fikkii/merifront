@@ -34,7 +34,7 @@ onMounted(() => {
   <section class="py-16 px-6 lg:px-20 bg-black overflow-hidden">
     <div class="max-w-6xl mx-auto text-center">
       <div class="carousel-track md:gap-20">
-        <div
+        <div data-aos="fade-right"
           v-for="(icon, index) in icons"
           :key="index"
           class="carousel-item text-blue-600 text-5xl"

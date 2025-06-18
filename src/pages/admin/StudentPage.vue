@@ -1,6 +1,6 @@
 <script setup>
     import Modal from '../../components/admin/Modal.vue'
-    import { ref, onMounted } from 'vue'
+    import { ref, onMounted, nextTick } from 'vue'
     import { useToast } from 'vue-toastification'
 
     const toast = useToast()
@@ -10,7 +10,14 @@
     const allStudent = ref([])
     const toggler = ref( false )
 
-    onMounted(fetchStudent)
+    onMounted(() => {
+        fetchStudent(), fetchSingleProfile()
+    })
+
+    const editId = ref(null) // This handles text field when edit mode is on
+
+    // Text fields
+    const editFields = ref(null) // This handles text field when edit mode is on
 
     const actionDropdown = ref([
         {
@@ -97,12 +104,62 @@ async function handlePairing(){
     }
 }
 
+async function fetchSingleProfile(id= 23){
+    const res = await axios.get(`/api/students/${id}`)
+
+    if (res.status == 200) {
+        const data = res.data
+        console.log(res.data)
+    }
+} 
+
+async function handleDelete(id){
+    const res = await axios.delete(`/api/admin/students/${id}`)
+    fetchStudent()
+}
+
+
+async function handleEdit(id='1'){
+        //Edit mode is active
+        editId.value = id
+
+        const data = await axios.get(`/api/students/${id}`)
+
+        const inputStruct = Object.entries(data.data).map(([key, value]) => {
+
+            const exclude = ['id', 'enrollment', 'peer']
+
+            if(exclude.includes(key)){
+                return null
+            }
+
+            return {
+            name: key,
+            placeholder: 'No placeholder',
+            type: 'text',
+            res: value
+            }
+        })
+
+        const fillInput = inputStruct.filter(value => value != null)
+
+        editFields.value = fillInput
+
+        toggler.value = true
+        await nextTick()
+        toastRef.value.setContent(data.data.project_hint)
+}
+
+
+
+
 </script>
 
 <template>
     <div>
         <div>
-            <Modal v-if="toggler" :fields="fields" @update="updateField" @close="formClose"  @submit="formSubmit" ></Modal>
+            <!-- shared admin form -->
+            <Modal v-if="toggler" :fields="editFields || fields" @update="updateField" @close="formClose"  @submit="formSubmit" ></Modal>
         </div>
         <div :class="[toggler ? 'blur' : '']">
             <div>
@@ -110,7 +167,7 @@ async function handlePairing(){
                     <button @click="handlePairing" class="bg-green-500 py-2 text-white block col-start-2 w-[100px] rounded">Group Students</button>
                 </div>
             </div>
-            <Table :items="allStudent" >
+            <Table @delete="handleDelete" @edit="handleEdit" :items="allStudent" >
                 <button @click="toggler = !toggler" class="bg-blue-500 ms-auto py-2 text-white block col-start-2 w-[100px] rounded"><i class="ri-add-line"></i>Add Student</button>
             </Table>
         </div>

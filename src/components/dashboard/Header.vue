@@ -3,12 +3,19 @@
     import { useRouter } from 'vue-router'
     import { useToast } from 'vue-toastification'
 
+    import { useUserStore }from '../../store/user.js'
+
     import axios from 'axios'
 
 const toggle = ref(false)
 
 const router = useRouter()
 const toast = useToast()
+
+
+const userStore = useUserStore()
+
+const role = userStore.role
 
 const toggleSidebar = () => {
   toggle.value = !toggle.value
@@ -69,6 +76,7 @@ async function handleChangePassword(){
     <!-- dynamic side nav -->
     <div v-if="toggle" class="bg-white translate-y-[100%] rounded shadow-2xl w-40 absolute bottom-0 right-0">
         <div class="flex rounded flex-col justify-stretch">
+            <RouterLink v-if="role !== 'student'" :to="{ name: 'role' }" class="block w-full p-2 border-b border-gray-200"><i class="ri-key-2-line"></i>Switch Role</RouterLink>
             <button @click="handleChangePassword" :to="{ name: 'home' }" class="w-full p-2 border-b border-gray-200"><i class="ri-key-2-line"></i> Change Password</button>
             <button @click="handleLogout" class="w-full p-2 border-b border-gray-200"><i class="ri-logout-box-line"></i> Logout</button>
         </div>

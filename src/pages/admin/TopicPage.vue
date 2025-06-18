@@ -6,7 +6,7 @@
     import { useToast } from 'vue-toastification'
 
     //import controllers to fetch data
-    import { fetchTopics, fetchCourses } from '../../controllers/controller.js'
+    import { fetchTopics, fetchCourses, fetchModules } from '../../controllers/controller.js'
 
     import axios from 'axios'
 
@@ -51,13 +51,9 @@
     onMounted(async () => { availableTopics.value = await fetchTopics(); availables.value = await fetchModules() })
 
 async function handleDelete(id){
-    const res = axios.delete(`/api/admin/topics/${id}`)
+    const res = await axios.delete(`/api/admin/topics/${id}`)
     availableTopics.value = await fetchTopics();
     availables.value = await fetchModules(); 
-}
-
-function getMarkdown(message){
-    content.value = message
 }
 
 async function formSubmit(formData){
@@ -71,6 +67,7 @@ async function formSubmit(formData){
     const jsonData = Object.fromEntries(formData)
 
     try{
+
         // check for editId and if not create a new topic
         if(!editId.value){
 
@@ -133,7 +130,6 @@ async function handleEdit(id='1'){
         })
 
         const fillInput = inputStruct.filter(value => value != null)
-
 
         editFields.value = fillInput
         

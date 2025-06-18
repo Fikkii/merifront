@@ -11,88 +11,29 @@
 
     const links = [
         {
-        name: "Add Course",
-        tag: "courses"
-        },
-        {
         name: "Add Module",
-        tag: "modules"
+        link: "admin-modules"
         },
         {
-        name: "Create AI Instructor",
-        tag: "instructors"
+        name: "Add Topic",
+        link: "admin-topics"
         },
         {
-        name: "Upload Materials",
-        tag: "materials"
+        name: "Add Projects",
+        link: "admin-projects"
         },
     ]
-
-    const fields = ref([
-    {
-        name: 'title',
-        placeholder: 'Enter Title Here',
-        res: '',
-        tags: ['courses', 'modules']
-    },
-    {
-        name: 'description',
-        placeholder: 'Enter Description Here',
-        res: '',
-        tags: ['courses']
-    },
-    ])
-
-    function handleModal(e, current){
-        endpoint.value = current
-
-        computedInput = fields.value.filter((value, id) => value.tags.includes(current))
-
-        console.log(computedInput)
-        toggle.value = true
-    }
-
-async function formSubmit(){
-    const data = []
-
-    //Generate dynamic data
-    computedInput.forEach((value, index) => {
-        if(value.res){
-            data.push({ [value.name]: value.res })
-        }
-    })
-
-    const formdata = Object.assign({}, ...data)
-    console.log(formdata)
-
-    const res = axios.post(`/api/admin/${endpoint.value}`, {...formdata})
-
-    toggle.value = !toggle.value
-}
-
-function updateField(index, value){
-fields.value[index].res = value
-}
-
-function formClose(){
-    toggle.value = false
-}
 
 </script>
 
 <template>
-    <!-- Quick Actions -->
-    <Modal v-if="toggle" @close="formClose" @update="updateField" @submit="formSubmit" :fields="computedInput" >
-
-    </Modal>
-
     <div class="quick-actions">
         <h2>Quick Actions</h2>
         <div class="action-buttons">
-            <button @click="(e) => { handleModal(e, link.tag) }" :id="link.tag" v-for="link in links" :to="{name: link.link}" class="action-btn primary">
+            <RouterLink :to="{name: link.link}" :id="link.tag" v-for="link in links" class="action-btn primary">
                 <i class="fas fa-plus"></i>
                 {{ link.name }}
-            </button>
+            </RouterLink>
         </div>
     </div>
 

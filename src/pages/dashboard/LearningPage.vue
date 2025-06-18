@@ -16,8 +16,9 @@
     const selectedCourseAmount = ref('')
     const email = ref('')
 
-watch(selectedCourse, ()=> {
+watch(selectedCourse, (newVal)=> {
     fetchDetails()
+    console.log(newVal)
 })
 
 onMounted(() => fetchUserCourse())
@@ -43,6 +44,7 @@ async function fetchUserCourse() {
     if (res.status == 200) {
         const data = await res.data
         currentCourse.value = data.course
+        console.log(data)
     }
   } catch (e) {
     console.error('Caught error:', e);
@@ -56,6 +58,7 @@ async function fetchDetails(){
       const user = await axios.get('/api/student/me')
       email.value = user.data.email
       selectedCourseAmount.value = singleCourse[0].price
+      console.log(singleCourse)
   } catch (e) {
     console.error('Caught error:', e);
     fetchCourse()
@@ -66,13 +69,13 @@ async function fetchDetails(){
 </script>
 
 <template>
-    <div>
+    <div class="w-full">
         <QuickBar />
         <div v-if="currentCourse" class="py-8">
             <ModuleList />
         </div>
 
-        <div v-else class="mt-3">
+        <div v-if="availableCourse" class="mt-3">
             <h2 class="text-2xl font-bold mb-6 text-center">Pick a Category</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 <label

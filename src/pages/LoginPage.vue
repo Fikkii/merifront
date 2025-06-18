@@ -22,6 +22,7 @@ const showSignup = ref(false)
 const router = useRouter()
 
 function handleGoogleOauth(data){
+    isLoading.value = true
     if(data.token){
       // Get user pinia store and save token and role
       const store = useUserStore()
@@ -33,11 +34,7 @@ function handleGoogleOauth(data){
       toast.success('Login Successfull.')
 
       //proper redirection after login based on role
-      if(data.user.role == 'admin'){
-        router.push({ name: 'dashboard-home' })
-      }else{
-        router.push({ name: 'dashboard-home' })
-      }
+        router.push({ name: 'role' })
 
     }else{
       toast.error('Unable to login')
@@ -103,7 +100,7 @@ async function handleLogin() {
       localStorage.setItem('jwt-token', data.token);
       localStorage.setItem('user-role', data.user.role);
       toast.success('Login Successfull.')
-      router.push({ name: 'dashboard-home' })
+      router.push({ name: 'role' })
     }else {
       throw new Error(data.error)
     }
@@ -117,8 +114,7 @@ async function handleLogin() {
   <div class="flex h-screen bg-white">
     <!-- Left Section: Login Form -->
     <div class="w-full md:w-1/2 flex items-center justify-center p-8">
-      <div class="w-full max-w-md space-y-3">
-          <img src="../assets/logo.png" width=65 alt="logo"/>
+      <div class="w-full max-w-md mt-20 space-y-3">
           <div>
               <div class="text-2xl">{{ showSignup ? 'Signup' : 'Login' }} To Continue</div>
           </div>
@@ -178,7 +174,7 @@ async function handleLogin() {
               <RouterLink :to="{ name: 'reset-password-email' }" href="#" class="text-blue-600 float-right hover:underline">Forgot password?</RouterLink>
 
               <button
-                      type="submit"
+                      type="submit" :hidden="isLoading"
                       class="w-full flex gap-4 justify-center py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
                       >
                       <span>{{ showSignup ? 'Signup' : 'Login' }}</span>

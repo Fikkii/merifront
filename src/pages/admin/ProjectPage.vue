@@ -1,6 +1,7 @@
 <script setup>
     import Modal from '../../components/admin/Modal.vue'
-    import { ref, onMounted } from 'vue'
+    import { ref, onMounted, nextTick } from 'vue'
+    import ToastEditor from '../../components/ToastEditor.vue'
     import { useToast } from 'vue-toastification'
 
     import axios from 'axios'
@@ -14,6 +15,10 @@
 
     // This stores the edit id and sets the mode accordingly...
     const editId = ref(null)
+
+    //For ToastEditor
+    const toastRef = ref(null)
+    const content = ref('')
 
     // Text fields
     const editFields = ref(null) // This handles text field when edit mode is on
@@ -62,8 +67,8 @@ async function fetchProjects() {
   }
 }
 
-function handleDelete(id){
-    const res = axios.delete(`/api/admin/projects/${id}`)
+async function handleDelete(id){
+    const res = await axios.delete(`/api/admin/projects/${id}`)
     fetchProjects()
 }
 
@@ -76,6 +81,13 @@ function updateField(index, value){
 }
 
 async function formSubmit(formData){
+
+    // Get markdown content and append it form
+    if(toastRef.value){
+        content.value = toastRef.value.saveContent()
+    }
+
+    formData.append('content', content.value)
     const jsonData = Object.fromEntries(formData)
 
     try{
@@ -116,7 +128,7 @@ async function handleEdit(id='1'){
         const data = await axios.get(`/api/projects/${id}`)
 
         const inputStruct = Object.entries(data.data).map(([key, value]) => {
-            const exclude = ['id', 'cover_img_url']
+            const exclude = ['id', 'evaluation', 'project_hint']
             if(exclude.includes(key)){
                 return null
             }
@@ -132,8 +144,10 @@ async function handleEdit(id='1'){
         const fillInput = inputStruct.filter(value => value != null)
 
         editFields.value = fillInput
-        
+
         toggler.value = true
+        await nextTick()
+        toastRef.value.setContent(data.data.project_hint)
 }
 
 function handleToggle(){
@@ -150,7 +164,12 @@ function handleToggle(){
     <div>
         <div>
             <!-- shared admin form -->
-            <Modal v-if="toggler" :fields="editFields || fields" @update="updateField" @close="formClose"  @submit="formSubmit" ></Modal>
+            <Modal v-if="toggler" :fields="editFields || fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
+                <!-- The markdown editor stays here -->
+                <div class="col-span-2">
+                    <ToastEditor ref="toastRef" />
+                </div>
+            </Modal>
         </div>
         <div :class="[toggler ? 'blur' : '']">
             <Table @edit="handleEdit" @delete="handleDelete" :items="allProject">

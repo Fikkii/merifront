@@ -51,8 +51,8 @@ onMounted(() => {
         </div>
         <div class="grid text-left">
           <div class="p-6 shadow-sm">
-            <div v-for="course in filteredCourse" class="p-2">
-                <img class="h-40 mx-auto md:h-70 w-auto" :src="`${apiUrl}${course.cover_img_url}`" alt="no image">
+            <div v-for="(course, index) in filteredCourse" class="p-2">
+                <img data-aos="fade" data-aos-delay="index * 100" class="h-40 mx-auto md:h-70 w-auto" :src="`${apiUrl}${course.cover_img_url}`" alt="no image">
                 <div class="prose prose-sm min-w-full text-white">
                     <h3 class="text-lg font-semibold mb-2 text-blue-600"><span></span>{{ course.title }} Curriculum</h3>
                     <div><span>Description:</span> {{ course.description }} </div>
@@ -63,8 +63,6 @@ onMounted(() => {
                             </ul>
                         </li>
                     </ul>
-                    <div><span>Price:</span> {{ course.price || 'Free' }} </div>
-                    <RouterLink :to="{ name: 'login' }" class="block text-center bg-orange-500 rounded px-6 py-2 w-full">Register</RouterLink>
                 </div>
             </div>
           </div>

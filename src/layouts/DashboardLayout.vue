@@ -19,10 +19,10 @@ function handleLogout(){
 </script>
 
 <template>
-    <div class="min-h-screen flex flex-col bg-gray-50">
+    <div class="min-h-screen max-w-screen flex flex-col bg-gray-50">
         <Header />
         <RouterView class="flex-1 px-6 py-12"></RouterView>
-        <DashNav />
+        <DashNav class="md:hidden"/>
     </div>
 </template>
 

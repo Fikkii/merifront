@@ -26,7 +26,8 @@ const actions = [
 },
 {
     title: 'Community',
-    icon: 'ri-notification-fill'
+    icon: 'ri-notification-fill',
+    link: 'community'
 },
 ]
 

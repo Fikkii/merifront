@@ -57,7 +57,7 @@
     onMounted(async () => {availableCourse.value = await fetchCourses()})
 
     async function handleDelete(id){
-        const res = axios.delete(`/api/admin/courses/${id}`)
+        const res = await axios.delete(`/api/admin/courses/${id}`)
         availableCourse.value = await fetchCourses()
     }
 
@@ -98,7 +98,7 @@ async function formSubmit(formData){
             return
         }
         formData.append('image', imgblob, 'cropped-img')
-        const res = axios.put(`/api/admin/courses/${editId.value}`, formData, {
+        const res = await axios.put(`/api/admin/courses/${editId.value}`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
             }
@@ -106,7 +106,7 @@ async function formSubmit(formData){
     }else{
         const imgblob = await imageRef.value.getCroppedImage()
         formData.append('image', imgblob, 'cropped-img')
-        const res = axios.post('/api/admin/courses', formData, {
+        const res = await axios.post('/api/admin/courses', formData, {
             headers: {
                 "Content-Type": "multipart/form-data"
             }

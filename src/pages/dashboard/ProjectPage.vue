@@ -112,7 +112,7 @@ async function formSubmit(formData){
 
         if(res.status == 200){
             const data = res.data
-            project_report.value = data
+            fetchProject()
             show_report.value = true
         }
 
@@ -172,23 +172,23 @@ function handleFullReport(){
                 <div class="prose prose-sm min-w-full">
                     <ol>
                         <h3> Project Strength </h3>
-                        <li v-for="strength in project_report.project_strengths">{{ strength }}</li>
+                        <li v-for="strength in project_report.feedback.project_strengths">{{ strength }}</li>
                     </ol>
                     <ol>
                         <h3> Project Weakness </h3>
-                        <li v-for="weakness in project_report.project_weakness">{{ weakness }}</li>
+                        <li v-for="weakness in project_report.feedback.project_weakness">{{ weakness }}</li>
                     </ol>
                     <ol>
                         <h3> Alignment with Instructor Instructions </h3>
-                        <li v-for="alignment in project_report.alignment">{{ alignment }}</li>
+                        <li v-for="alignment in project_report.feedback.alignment">{{ alignment }}</li>
                     </ol>
                     <ol>
                         <h3> Areas of Improvement </h3>
-                        <li v-for="improvement in project_report.aoi">{{ improvement }}</li>
+                        <li v-for="improvement in project_report.feedback.aoi">{{ improvement }}</li>
                     </ol>
                     <ol>
                         <h3>Final Assessment</h3>
-                        <li v-for="final in project_report.final_assessment">{{ final }}</li>
+                        <li v-for="final in project_report.feedback.final_assessment">{{ final }}</li>
                     </ol>
                 </div>
             </div>

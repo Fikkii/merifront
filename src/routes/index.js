@@ -4,6 +4,18 @@ import axios from 'axios'
 
 const routes = [
     {
+        path: '/role',
+        component: () => import('../layouts/DashboardLayout.vue'),
+        meta: { requiresAuth: true, permission: ['student.manage', 'admin.manage']},
+        children: [
+            {
+                path: '',
+                name: 'role',
+                component: () => import('../pages/RolePage.vue'),
+            }
+        ]
+    },
+    {
         path: '/dashboard',
         component: () => import('../layouts/DashboardLayout.vue'),
         meta: { requiresAuth: true, permission: ['student.manage', 'admin.manage'] },
@@ -58,6 +70,11 @@ const routes = [
                 path: 'learning',
                 name: 'learning',
                 component: () => import('../pages/dashboard/LearningPage.vue'),
+            },
+            {
+                path: 'community',
+                name: 'community',
+                component: () => import('../pages/dashboard/CommunityPage.vue'),
             },
             {
                 path: 'peer',
