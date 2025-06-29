@@ -31,13 +31,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="py-16 px-6 lg:px-20 bg-black overflow-hidden">
+  <section class="px-6 mt-[-20px mt-[-40px] lg:px-20 overflow-hidden">
     <div class="max-w-6xl mx-auto text-center">
       <div class="carousel-track md:gap-20">
-        <div data-aos="fade-right"
+        <div
           v-for="(icon, index) in icons"
           :key="index"
-          class="carousel-item text-blue-600 text-5xl"
+          class="carousel-item text-black text-5xl"
         >
           <i :class="icon" :title="icon.replace('ri-', '').replace('-line', '')"></i>
         </div>

@@ -43,6 +43,13 @@
         res: '',
     },
     {
+        name: 'courseId',
+        placeholder: 'Select Module Title',
+        res: '',
+        type: 'select',
+        options: {}
+    },
+    {
         name: 'moduleId',
         placeholder: 'Select Module Title',
         res: '',
@@ -172,9 +179,9 @@ function handleToggle(){
             </Modal>
         </div>
         <div :class="[toggler ? 'blur' : '']">
-            <Table @edit="handleEdit" @delete="handleDelete" :items="allProject">
+            <CategorizedTable @edit="handleEdit" @delete="handleDelete" :items="allProject">
                 <button :edit="editId" @click="handleToggle" class="bg-blue-500 ms-auto py-2 text-white block col-start-2 w-[100px] rounded"><i class="ri-add-line"></i>Add Project</button>
-            </Table>
+            </CategorizedTable>
         </div>
     </div>
 </template>

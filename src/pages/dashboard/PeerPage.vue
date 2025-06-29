@@ -38,7 +38,9 @@ function handleNotPaired(){
       <p class="mt-2">Group Leader: 
         <span class="font-semibold">{{ peerGroup.leader.fullname }}</span> 
         (<a class="underline" :href="`mailto:${peerGroup.leader.email}`">{{ peerGroup.leader.email }}</a>)
-        <span class="font-medium">{{ peerGroup.leader.fullname || 'undefined' }}</span>
+        (<a class="underline" :href="`http://wa.me/${peerGroup.leader.phone}`">Contact on Whatsapp</a>)
+        <br></br>
+        <span class="font-medium text-yellow-500">Group Leader Name: {{ peerGroup.leader.fullname || 'Anonymous' }}</span>
       </p>
     </div>
 
@@ -51,7 +53,11 @@ function handleNotPaired(){
           :key="index" 
           class="flex flex-col md:flex-row md:items-center md:justify-between border-b py-2"
         >
+        <div class="flex flex-col">
           <span class="font-medium">{{ member.fullname || 'undefined' }}</span>
+          <a v-if="member.phone" :href="`http://wa.me/${member.phone}`" class="text-sm text-indigo-600 hover:underline">Message on Whatsapp</a>
+          <div v-else="member.phone" class="text-sm text-indigo-600 text-red-500 cursor-pointer">Profile not Updated</div>
+        </div>
           <a :href="`mailto:${member.email}`" class="text-sm text-indigo-600 hover:underline">{{ member.email }}</a>
         </li>
       </ul>

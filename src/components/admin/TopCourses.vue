@@ -1,3 +1,7 @@
+<script setup>
+    defineProps(['items'])
+    
+</script>
 <template>
     <div class="card">
         <div class="card-header">
@@ -5,30 +9,10 @@
             <a href="#" class="view-all">Manage All</a>
         </div>
         <div class="course-list">
-            <div class="course-item">
+            <div v-for="item in items" class="course-item">
                 <div class="course-info">
-                    <h4>JavaScript Fundamentals</h4>
-                    <p>245 students enrolled</p>
-                </div>
-                <div class="course-actions">
-                    <button class="btn-icon"><i class="fas fa-edit"></i></button>
-                    <button class="btn-icon"><i class="fas fa-eye"></i></button>
-                </div>
-            </div>
-            <div class="course-item">
-                <div class="course-info">
-                    <h4>Python for Beginners</h4>
-                    <p>189 students enrolled</p>
-                </div>
-                <div class="course-actions">
-                    <button class="btn-icon"><i class="fas fa-edit"></i></button>
-                    <button class="btn-icon"><i class="fas fa-eye"></i></button>
-                </div>
-            </div>
-            <div class="course-item">
-                <div class="course-info">
-                    <h4>React Development</h4>
-                    <p>156 students enrolled</p>
+                    <h4>{{  item.title }}</h4>
+                    <p>{{ item.total }} students enrolled</p>
                 </div>
                 <div class="course-actions">
                     <button class="btn-icon"><i class="fas fa-edit"></i></button>

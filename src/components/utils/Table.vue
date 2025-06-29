@@ -165,7 +165,7 @@ function numToIcon(number) {
       <thead class="bg-gray-100">
         <tr>
           <th v-for="(col, index) in columns" :key="index" class="px-4 py-3 text-sm font-semibold text-gray-700 capitalize border-b border-gray-200 whitespace-nowrap">
-            {{ col }}
+              {{ col }}
           </th>
           <th class="px-4 py-3 text-sm font-semibold text-gray-700 border-b border-gray-200 whitespace-nowrap">Actions</th>
         </tr>
@@ -190,7 +190,7 @@ function numToIcon(number) {
   </div>
 
   <!-- Pagination -->
-  <div class="flex justify-between items-center mt-4 p-4">
+  <div class="flex overflow-x-auto justify-between items-center mt-4 p-4">
     <div class="text-sm text-gray-600">Page {{ currentPage }} of {{ totalPages }}</div>
     <div class="flex gap-2">
       <button

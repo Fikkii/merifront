@@ -3,6 +3,8 @@
     import { ref, onMounted, nextTick } from 'vue'
     import { useToast } from 'vue-toastification'
 
+    import loader from '../../assets/loader.gif'
+
     const toast = useToast()
 
     import axios from 'axios'
@@ -93,7 +95,13 @@ function handleDropdown(id){
     console.log(id)
 }
 
-async function handlePairing(){
+async function handlePairing(e){
+  e.currentTarget.innerHTML += `<img class="absolute top-1 left-1 z-10" width="20" id="loader" src="${loader}">`
+  setTimeout(() => {
+    const temp = document.getElementById('loader')
+    if (temp) temp.remove()
+  }, 3000)
+
     const req = await axios.post('/api/peer')
     
     if(req.data.groups){
@@ -103,10 +111,17 @@ async function handlePairing(){
     }else{
         toast.error('Unable to create Pair Group, Not enough user')
     }
+
 }
 
 
-async function handlePairingDelete(){
+async function handlePairingDelete(e){
+  e.currentTarget.innerHTML += `<img class="absolute top-1 left-1 z-10" width="20" id="loader" src="${loader}">`
+  setTimeout(() => {
+    const temp = document.getElementById('loader')
+    if (temp) temp.remove()
+  }, 3000)
+
     const req = await axios.delete('/api/peer')
     
     fetchStudent()
@@ -115,6 +130,7 @@ async function handlePairingDelete(){
     }else{
         toast.error('Unable to delete Pair Group')
     }
+
 }
 
 async function fetchSingleProfile(id= 23){
@@ -175,15 +191,15 @@ async function handleEdit(id='1'){
             <Modal v-if="toggler" :fields="editFields || fields" @update="updateField" @close="formClose"  @submit="formSubmit" ></Modal>
         </div>
         <div :class="[toggler ? 'blur' : '']">
-            <Table @delete="handleDelete" @edit="handleEdit" :items="allStudent" >
+            <CategorizedTable groupBy="is_enrolled" @delete="handleDelete" @edit="handleEdit" :items="allStudent" >
                 <div class="flex">
                     <div class="flex flex-wrap gap-2">
-                        <button @click="handlePairing" class="bg-green-500 py-2 text-white block col-start-2 w-[100px] rounded">Assign Groups</button>
-                        <button @click="handlePairingDelete" class="bg-red-500 py-2 text-white block col-start-2 w-[100px] rounded">Delete Groups</button>
+                        <button @click="handlePairing" class="relative bg-green-500 py-2 text-white block col-start-2 w-[100px] rounded">Assign Groups</button>
+                        <button @click="handlePairingDelete" class="relative bg-red-500 py-2 text-white block col-start-2 w-[100px] rounded">Delete Groups</button>
                     </div>
                     <button @click="toggler = !toggler" class="bg-blue-500 ms-auto py-2 text-white block col-start-2 w-[100px] rounded"><i class="ri-add-line"></i>Add Student</button>
                 </div>
-            </Table>
+            </CategorizedTable>
         </div>
     </div>
 </template>

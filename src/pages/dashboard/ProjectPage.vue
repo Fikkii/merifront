@@ -34,6 +34,8 @@
     const project = ref(null)
     const project_report = ref(null)
 
+    const hint = ref(null)
+
     //handles Toggle
     const toggler = ref(null)
 
@@ -81,6 +83,7 @@
         const res = await axios.get(`/api/student/project?projectId=${props.id}`)
 
         project.value = res.data.project
+        hint.value = marked.parse(res.data.project.project_hint)
 
         //Check if user has been evaluated already...
         if(res.data.project.evaluation){
@@ -205,6 +208,7 @@ function handleFullReport(){
                 </div>
                 <div class="text-xl mb-4 text-blue-800 font-bold mt-5 uppercase"><i class="ri-stack-fill">CAPSTONE PROJECT --/ </i>{{ project.title }} </div>
                 <div class="prose md:prose-md sm:prose-sm min-w-full">{{ project.instructions }}</div>
+                <div v-html="hint" class="prose md:prose-md sm:prose-sm min-w-full"></div>
             </div>
         </div>
     </div>

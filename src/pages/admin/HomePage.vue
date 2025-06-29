@@ -14,7 +14,24 @@
     const totalModules = ref(null)
     const totalTopics = ref(null)
 
-    onMounted(() => { fetchCourse(); fetchModules(); fetchTopics() })
+    const topCourses = ref(null)
+
+    onMounted(() => { fetchCourse(); fetchEnrollmentsTotal(); fetchModules(); fetchTopics() })
+
+async function fetchEnrollmentsTotal() {
+  try {
+    const res = await axios.get('/api/top/courses')
+
+    if (res.status == 200) {
+        const data = res.data
+        topCourses.value = data
+        console.log(topCourses.value)
+    }
+  } catch (e) {
+    console.error('Caught error:', e);
+  }
+}
+    
 
 async function fetchCourse() {
   try {
@@ -68,7 +85,7 @@ async function fetchTopics() {
     <QuickActions />
     <div class="flex flex-col md:flex-row gap-8">
         <Activity class="flex-1" />
-        <TopCourses  class="flex-1"/>
+        <TopCourses :items="topCourses" class="flex-1"/>
     </div>
 </template>
 

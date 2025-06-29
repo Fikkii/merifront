@@ -1,5 +1,6 @@
 <script setup>
     import Modal from '../../components/admin/Modal.vue'
+    import ChatCard from '../../components/ChatCard.vue'
     import ToastEditor from '../../components/ToastEditor.vue'
     import { ref, onMounted, nextTick, onUpdated } from 'vue'
 
@@ -34,11 +35,18 @@
         res: ''
     },
     {
+        name: 'courseId',
+        placeholder: 'Enter Course ID',
+        res: '',
+        type: 'select',
+        options: []
+    },
+    {
         name: 'moduleId',
         placeholder: 'Enter module ID',
         res: '',
         type: 'select',
-        options: {}
+        options: []
     },
     {
         name: 'recommended_video',
@@ -54,10 +62,11 @@ async function handleDelete(id){
     const res = await axios.delete(`/api/admin/topics/${id}`)
     availableTopics.value = await fetchTopics();
     availables.value = await fetchModules(); 
+    console.log('Updating...')
 }
 
 async function formSubmit(formData){
-    
+
     // Get markdown content and append it form
     if(toastRef.value){
         content.value = toastRef.value.saveContent()
@@ -84,7 +93,7 @@ async function formSubmit(formData){
                     'Content-Type': 'application/json'
                 }
             })
-            
+
             toast.success('Topic Edited Successfully...')
         }
         toggler.value = !toggler.value
@@ -132,7 +141,7 @@ async function handleEdit(id='1'){
         const fillInput = inputStruct.filter(value => value != null)
 
         editFields.value = fillInput
-        
+
         toggler.value = true
         await nextTick()
         toastRef.value.setContent(data.data.topic_content)
@@ -150,19 +159,24 @@ function handleToggle(){
 </script>
 
 <template>
-    <div class="relative">
-        <div>
-            <Modal v-if="toggler" :fields="editFields || fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
-            <!-- The markdown editor stays here -->
-            <div class="col-span-2">
-                <ToastEditor ref="toastRef" />
+    <div class="relative flex gap-2">
+        <div class="overflow-x-auto max-h-screen">
+            <div>
+                <Modal v-if="toggler" :fields="editFields || fields" @update="updateField" @close="formClose"  @submit="formSubmit" >
+                <!-- The markdown editor stays here -->
+                <div class="col-span-2">
+                    <ToastEditor ref="toastRef" />
+                </div>
+                </Modal>
             </div>
-            </Modal>
-        </div>
-        <div :class="[toggler ? 'blur' : '']">
-            <CategorizedTable @edit="handleEdit" @delete="handleDelete" :items="availableTopics" >
+            <div :class="[toggler ? 'blur' : '']">
+                <CategorizedTable groupBy="module_title" @edit="handleEdit" @delete="handleDelete" :items="availableTopics" >
                 <button :edit="editId" @click="handleToggle" class="bg-blue-500 ms-auto py-2 text-white block col-start-2 w-[100px] rounded"><i class="ri-add-line"></i>Add Topic</button>
-            </CategorizedTable>
+                </CategorizedTable>
+            </div>
+        </div>
+        <div class="hidden md:block bg-white rounded-lg p-4 flex-1">
+            <ChatCard />
         </div>
     </div>
 </template>

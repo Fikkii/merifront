@@ -25,11 +25,11 @@
 
 <template>
     <!-- Why Choose Us Section -->
-    <section class="py-16 px-6 lg:px-20 bg-white border-t">
+    <section class="py-16 px-6 lg:px-20">
       <div class="max-w-5xl mx-auto">
         <h2 class="text-2xl font-bold text-gray-900 text-center mb-10">Why MeriLearn Works for Real Learning</h2>
         <div class="grid md:grid-cols-3 gap-5">
-            <div v-for="(choose, index) in ChooseUs" data-aos="flip-up" :data-aos-delay="index * 100" class="flex flex-col border border-gray-300 rounded-lg shadow p-5 items-start gap-4">
+            <div v-for="(choose, index) in ChooseUs" class="flex flex-col border border-gray-300 rounded-lg shadow p-5 items-start gap-4">
             <i :class="[choose.icon]" class="text-3xl"></i>
             <div>
                 <h3 class="font-semibold text-lg text-gray-900">{{ choose.title }}</h3>

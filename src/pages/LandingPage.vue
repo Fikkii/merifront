@@ -27,7 +27,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="min-h-screen max-w-full flex flex-col text-gray-800">
+    <div id="container" class="min-h-screen max-w-full flex flex-col text-gray-800">
         <HeroSection />
         <TechnologySection />
         <ChooseUsSection />
@@ -41,5 +41,8 @@ onMounted(() => {
 </template>
 
 <style scoped>
+#container {
+    background-color: #FFFCF9;
+}
 
 </style>

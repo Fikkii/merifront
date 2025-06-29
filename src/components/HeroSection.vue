@@ -4,10 +4,10 @@
 
 <template>
     <!-- Hero Section -->
-    <main class="grid grid-cols-1 lg:grid-cols-10 items-center px-6 lg:px-20 py-5 gap-10 bg-black">
+    <main class="grid grid-cols-1 lg:grid-cols-10 items-center px-6 lg:px-20 gap-10">
       <!-- Text Content -->
       <section class="lg:col-span-5 space-y-6">
-        <h1 class="text-4xl font-extrabold text-white leading-tight">
+        <h1 class="text-4xl font-extrabold leading-tight">
             Transforming Students into Leaders
         </h1>
         <p class="text-gray-400 text-lg">
@@ -25,6 +25,10 @@
 </template>
 
 <style scoped>
+
+main {
+    background-image: url('/hero.jpg')
+}
     
 </style>
 

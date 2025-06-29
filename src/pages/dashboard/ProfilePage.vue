@@ -3,9 +3,14 @@
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
+import { useToast } from 'vue-toastification'
+
+const toast = useToast()
+
 const email = ref('')
 const fullname = ref('')
 const password = ref('')
+const phone = ref('')
 
 const isLoading = ref(false)
 const error = ref('')
@@ -28,12 +33,13 @@ async function fetchProfile() {
         const data = await res.data
         email.value = data.email
         fullname.value = data.fullname
+        phone.value = data.phone
     }else{
       throw new Error(data.error)
     }
   } catch (e) {
     isLoading.value = false
-    error.value = e
+    toast.error(e.message)
     console.error('Caught error:', e);
   }
 }
@@ -41,18 +47,23 @@ async function fetchProfile() {
 async function handleUpdate() {
   isLoading.value = true
   try {
-    const response = await axios.put('/api/student/me', { fullname: fullname.value, email: email.value})
+    const response = await axios.put('/api/student/me', { fullname: fullname.value, email: email.value, phone: phone.value})
 
 
     if (response.status == 200) {
         success.value = "profile updated"
         fetchProfile()
+        toast.success('Profile Update Successfully')
     }
 
   } catch (e) {
     isLoading.value = false
-    error.value = e
+    toast.error(e.message)
     console.error('Caught error:', e);
+  }finally{
+    setTimeout(() => {
+        isLoading.value = false
+    }, 3000)
   }
 }
 
@@ -85,6 +96,14 @@ async function handleUpdate() {
                 <label class="block mb-1 text-gray-700">Fullname</label>
                 <input
                 v-model="fullname"
+                type="text"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+            </div>
+            <div>
+                <label class="block mb-1 text-gray-700">Phone</label>
+                <input
+                v-model="phone"
                 type="text"
                 class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-blue-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />

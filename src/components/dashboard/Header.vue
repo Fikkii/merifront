@@ -76,15 +76,15 @@ async function handleChangePassword(){
     <!-- dynamic side nav -->
     <div v-if="toggle" class="bg-white translate-y-[100%] rounded shadow-2xl w-40 absolute bottom-0 right-0">
         <div class="flex rounded flex-col justify-stretch">
-            <RouterLink v-if="role !== 'student'" :to="{ name: 'role' }" class="block w-full p-2 border-b border-gray-200"><i class="ri-key-2-line"></i>Switch Role</RouterLink>
-            <button @click="handleChangePassword" :to="{ name: 'home' }" class="w-full p-2 border-b border-gray-200"><i class="ri-key-2-line"></i> Change Password</button>
-            <button @click="handleLogout" class="w-full p-2 border-b border-gray-200"><i class="ri-logout-box-line"></i> Logout</button>
+            <RouterLink :to="{ name: 'profile' }" class="block text-center w-full p-2 border-b border-gray-200"><i class="ri-user-2-line text-lg mr-3"></i>Profile</RouterLink>
+            <RouterLink v-if="role !== 'student'" :to="{ name: 'role' }" class="block text-center w-full p-2 border-b border-gray-200"><i class="ri-restart-line text-lg mr-3"></i>Switch Role</RouterLink>
+            <button @click="handleChangePassword" :to="{ name: 'home' }" class="w-full p-2 border-b border-gray-200 mr-3"><i class="ri-key-2-line text-lg"></i> Change Password</button>
+            <button @click="handleLogout" class="w-full p-2 border-b border-gray-200"><i class="ri-logout-box-line text-lg mr-3"></i> Logout</button>
         </div>
     </div>
 
     <RouterLink :to="{ name: 'dashboard-home' }" class="flex flex-col items-center">
-          <img class="h-10 w-auto" src="../../assets/logo.png" alt="">
-          Merilearn
+          <RouterLink :to="{ name: 'dashboard-home' }" class="text-2xl font-bold text-blue-600 flex gap-2"><img width=30 src="../../assets/logo.png" /> Merilearn</RouterLink>
       </RouterLink>
       <div class="text-right block">
           <button @click="toggleSidebar">
