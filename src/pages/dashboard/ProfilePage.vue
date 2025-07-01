@@ -12,6 +12,8 @@ const fullname = ref('')
 const password = ref('')
 const phone = ref('')
 
+const group_link = ref('')
+
 const isLoading = ref(false)
 const error = ref('')
 const success = ref('')
@@ -34,6 +36,7 @@ async function fetchProfile() {
         email.value = data.email
         fullname.value = data.fullname
         phone.value = data.phone
+        group_link.value = data.group_link
     }else{
       throw new Error(data.error)
     }
@@ -71,15 +74,22 @@ async function handleUpdate() {
 
 <template>
     <div>
-        <!-- Success Message -->
-        <div v-if="success" class="bg-green-500 p-4 m-5 text-white absolute w-[300px] top-0 right-0 rounded shadow">
-            {{ success }}
+        <!-- profile card -->
+        <RouterLink class="text-blue-500 font-bold md:mb-5 block" :to="{ name: 'dashboard-home' }"> <i class="ri-arrow-left-line"></i>Go back</RouterLink>
+        <div class="font-bold text-xl">
+            Your Profile
         </div>
-        <!-- Error Message-->
-        <div v-if="error" class="bg-red-500 p-4 m-5 text-white absolute w-[300px] top-0 right-0 rounded shadow">
-            {{ error }}
+        <div class="flex flex-wrap shadow gap-4 rounded-lg justify-between md:my-10 mb-4 p-5 md:p-10 bg-yellow-100">
+            <div class="prose">
+                <div class="font-bold">Full-Name: {{ fullname }}</div>
+                <div>Email: {{ email }}</div>
+                <div>Phone: {{ phone }}</div>
+            </div>
+            <div class="flex flex-col gap-4">
+                <a class="px-6 md:px-8 py-4 bg-blue-500 text-white rounded-sm" :href="`https://${group_link}`" target="_blank">Join Dedicated Group <i class="ri-arrow-right-line"></i></a>
+                <RouterLink class="text-blue-500 font-bold mb-5" :to="{ name: 'peer' }">Check Peer Group <i class="ri-arrow-right-line"></i></RouterLink>
+            </div>
         </div>
-
         <!-- Login Form -->
         <form @submit.prevent="e => handleUpdate(e)" class="space-y-4 bg-white border-blue-500 p-6 rounded-lg shadow-2xl relative">
             <span class="text-lg">Update Profile</span>
@@ -115,6 +125,7 @@ async function handleUpdate() {
                 <span>Update Profile</span>
                 <img v-if="isLoading" width="20" src="../../assets/loader.gif" alt="spinner">
             </button>
+            <p class="text-red-500 font-bold">Changes are not reflected until update is done. Make sure to click on update to retain changes</p>
         </form>
     </div>
 </template>

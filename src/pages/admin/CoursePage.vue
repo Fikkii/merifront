@@ -52,9 +52,15 @@
         type: 'text',
         res: ''
     },
+    {
+        name: 'd_wlink',
+        placeholder: 'Enter Course Description',
+        type: 'text',
+        res: ''
+    },
     ])
 
-    onMounted(async () => {availableCourse.value = await fetchCourses()})
+    onMounted(async () => { availableCourse.value = await fetchCourses()})
 
     async function handleDelete(id){
         const res = await axios.delete(`/api/admin/courses/${id}`)

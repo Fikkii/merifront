@@ -187,4 +187,3 @@ const recipientCount = computed(() => {
     </div>
   </div>
 </template>
-

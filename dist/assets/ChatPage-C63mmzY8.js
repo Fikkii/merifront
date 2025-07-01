@@ -1,0 +1,1 @@
+import{C as a}from"./ChatCard-De4QxpK0.js";import{j as r,o as t}from"./index-Doh7Rih5.js";import"./marked.esm-DKjyhwJX.js";const m={__name:"ChatPage",setup(o){return(e,c)=>(t(),r(a))}};export{m as default};
