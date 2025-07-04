@@ -44,7 +44,7 @@
     </div>
 
     <a
-            :href="https://discord.gg/`{discord}`"
+            :href="`https://discord.gg/{discord}`"
       target="_blank"
       class="inline-block bg-black text-white px-6 py-3 rounded-xl text-lg font-medium hover:bg-indigo-700 transition"
     >

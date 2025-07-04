@@ -55,18 +55,30 @@
                 title: 'html'
             },
             {
-                id: 'python',
+                id: 'py',
                 title: 'python'
             },
             {
+                id: 'js',
+                title: 'js'
+            },
+            {
+                id: 'sql',
+                title: 'sql'
+            },
+            {
+                id: 'zip',
+                title: 'zip'
+            },
+            {
                 id: 'ipynb',
-                title: 'ipynb'
+                title: 'Jupyter Notebook'
             }
         ],
     },
     {
         name: 'file_link',
-        placeholder: 'Select file type',
+        placeholder: 'Paste The link to the Google Drive',
         res: '',
         type: 'text'
     },
@@ -83,7 +95,7 @@
         const res = await axios.get(`/api/student/project?projectId=${props.id}`)
 
         project.value = res.data.project
-        hint.value = marked.parse(res.data.project.project_hint)
+        hint.value = marked.parse(res.data.project.project_hint || '<b class="prose text-blue-500 border-t block mt-10">No Project hint available</b>')
 
         //Check if user has been evaluated already...
         if(res.data.project.evaluation){
@@ -105,9 +117,8 @@ function handleToggle(){
 async function formSubmit(formData){
     formData.append('projectId', routes.params.id)
     const jsonData = Object.fromEntries(formData)
-    console.log(jsonData)
     try{
-        const res = await axios.post(`/api/grade/`, jsonData, {
+        const res = await axios.post(`/api/grade/gemini`, jsonData, {
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -121,7 +132,6 @@ async function formSubmit(formData){
 
         toast.success('Project has been submitted successfully...')
     }catch(e){
-        console.log(e)
         toast.error(e.message)
     } finally {
         toggler.value = false
