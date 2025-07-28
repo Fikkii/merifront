@@ -52,7 +52,7 @@ onMounted(() => {
         <h3 class="text-lg font-semibold mb-2">Suggested Topics</h3>
         <div v-for="topic in topics">
             <div class="text-sm text-gray-700">
-                <div @click="copyToClipboard(topic)" class="p-2 mt-2 rounded shadow-lg">{{ topic }}</div>
+                <div @click="copyToClipboard(topic)" class="p-2 mt-2 break-words rounded shadow-lg">{{ topic }}</div>
             </div>
         </div>
     </div>

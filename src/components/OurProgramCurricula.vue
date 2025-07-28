@@ -40,17 +40,17 @@ onMounted(() => {
 
 <template>
     <!-- Our Courses -->
-    <section class="py-16 px-6 lg:px-20 bg-black border-t">
+    <section class="py-16 px-6 lg:px-20">
       <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl border-b-4 border-blue-500 text-white font-bold mb-10">Program Curricula</h2>
-        <--nav -->
+        <h2 class="text-3xl border-b-4 border-orange-500 text-black font-bold mb-10">Program Curricula</h2>
+        <!--nav -->
         <div class="flex gap-2 mb-5 min-w-50 overflow-x-auto">
-            <button :class="[course_id == course.id ? 'bg-blue-500' : '']" @click="handleCurriculum" :id="course.id" v-for="course in availableCourse" class="min-w-60 px-4 flex-1 py-2 border border-blue-500 rounded text-lg text-white text-center">
+            <button :class="[course_id == course.id ? 'bg-teal-500 text-white' : 'bg-white']" @click="handleCurriculum" :id="course.id" v-for="course in availableCourse" class="min-w-60 px-4 flex-1 py-2 border-l-[green] border-l-[5px] border border-gray-200 shadow-lg rounded text-lg text-black text-center">
                 {{ course.title }} Curriculum
             </button>
         </div>
         <div class="grid text-left">
-          <div class="p-6 shadow-sm">
+          <div class="p-6 shadow-sm bg-black">
             <div v-for="(course, index) in filteredCourse" class="p-2">
                 <img data-aos="fade" data-aos-delay="index * 100" class="h-40 mx-auto md:h-70 w-auto" :src="`${apiUrl}${course.cover_img_url}`" alt="no image">
                 <div class="prose prose-sm min-w-full text-white">

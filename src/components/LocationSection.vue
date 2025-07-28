@@ -4,10 +4,10 @@
 
 <template>
     <!-- Location & Contact Section -->
-    <section class="bg-blue-50 border-t py-16 px-6 lg:px-20">
+    <section class="py-16 px-6 lg:px-20">
       <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-start">
         <div>
-          <h2 class="text-2xl font-bold text-gray-900 mb-4">Our Location</h2>
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Location</h2>
           <p class="text-gray-700 mb-6">
             We’re based in Ilorin, Nigeria — but our platform supports learners everywhere.
           </p>
@@ -24,7 +24,7 @@
           </div>
         </div>
         <div>
-          <h2 class="text-2xl font-bold text-gray-900 mb-4">Contact Us</h2>
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">Contact Us</h2>
           <p class="text-gray-700 mb-6">Have questions? We’re happy to help. Reach out via email or use the form below.</p>
           <ul class="space-y-2 mb-6 text-gray-700">
             <li class="flex items-center gap-2">

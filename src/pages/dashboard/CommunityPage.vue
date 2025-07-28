@@ -1,5 +1,5 @@
 <template>
-  <section v-if="course" class="bg-white mt-5 py-10 px-6 md:px-12 text-center rounded-2xl shadow-md max-w-4xl mx-auto">
+  <section class="bg-white mt-5 py-10 px-6 md:px-12 text-center rounded-2xl shadow-md max-w-4xl mx-auto">
     <h2 class="text-3xl font-bold text-gray-800 mb-4">Stay Connected</h2>
     <p class="text-gray-600 mb-6">
       Follow us on social media and be part of our growing community!
@@ -55,7 +55,6 @@
 
 <script setup>
     import { ref, onMounted } from 'vue'
-    import { fetchCourses } from '../../controllers/controller.js'
     
     import axios from 'axios'
 

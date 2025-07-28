@@ -4,10 +4,10 @@
 
 <template>
     <!-- Navbar -->
-  <header class="sticky z-999 top-0 left-0 mb-6 bg-white border-b py-3 px-4 flex justify-between relative items-center">
-
+  <header class="sticky py-4 z-999 top-0 bg-white left-0">
+      <div class="w-full relative mx-auto max-w-6xl">
         <RouterLink :to="{ name: 'home' }" class="text-2xl font-bold text-blue-600 flex gap-2"><img width=30 src="../assets/logo.png" /> Merilearn</RouterLink>
-
+      </div>
     </header>
 </template>
 

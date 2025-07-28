@@ -11,6 +11,7 @@
     import WhatWeOfferSection from '../components/WhatWeOfferSection.vue'
     import TestimonialSection from '../components/TestimonialSection.vue'
     import OurProgramCurricula from '../components/OurProgramCurricula.vue'
+    import CategoriesSlider from '../components/CategoriesSlider.vue'
     import OurCourses from '../components/OurCourses.vue'
     import LocationSection from '../components/LocationSection.vue'
     import FooterSection from '../components/FooterSection.vue'
@@ -19,7 +20,7 @@
 onMounted(() => {
   AOS.init({
     duration: 1000,
-    once: false, // animate only once when in view
+    once: true, // animate only once when in view
     offset: 200
   })
 })
@@ -27,22 +28,17 @@ onMounted(() => {
 </script>
 
 <template>
-    <div id="container" class="min-h-screen max-w-full flex flex-col text-gray-800">
+    <div id="container" class="min-h-screen max-w-full flex gap-14 flex-col text-gray-800">
         <HeroSection />
+        <CategoriesSlider>
+            <ChooseUsSection />
+        </CategoriesSlider>
         <TechnologySection />
-        <ChooseUsSection />
         <OurCourses />
-        <OurProgramCurricula />
         <WhatWeOfferSection />
         <TestimonialSection />
-        <LocationSection />
-        <FooterSection />
     </div>
 </template>
 
 <style scoped>
-#container {
-    background-color: #FFFCF9;
-}
-
 </style>

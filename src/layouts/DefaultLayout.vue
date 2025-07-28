@@ -3,6 +3,7 @@
     import { useRouter } from 'vue-router'
 
     import HeaderSection from '../components/HeaderSection.vue'
+    import FooterSection from '../components/FooterSection.vue'
 
 const loading = ref(true)
 const router = useRouter()
@@ -32,6 +33,7 @@ onMounted(() => {
         <div class="max-w-full flex flex-col ">
             <HeaderSection />
             <RouterView :class="[loading ? 'blur' : '']"></RouterView>
+            <FooterSection />
         </div>
     </div>
 </template>

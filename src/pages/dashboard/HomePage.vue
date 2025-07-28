@@ -4,6 +4,10 @@
     import DescButton from '../../components/dashboard/DescButton.vue'
     import ProgressBar from '../../components/ProgressBar.vue'
 
+    import WeeklyTracker from '../../components/WeeklyTracker.vue'
+
+    import Leaderboard from '../../components/Leaderboard.vue'
+
 import EbookRecommender from '../../components/EbookRecommender.vue'
 import axios from 'axios'
 import { ref, onMounted } from 'vue'
@@ -85,7 +89,7 @@ const getRecommendations = async (genre) => {
         <div class="flex flex-col md:grid md:grid-cols-6 gap-3">
             <div class="col-span-4 flex flex-col gap-2 justify-between">
                 <div class="grid md:grid-cols-2 gap-2">
-                    <Card icon="fa-calendar" title="Topic Completed" total="0"/>
+                    <Card icon="fa-calendar" title="Topic Completed" :total="metric.total_topic_completed"/>
                     <Card icon="fa-briefcase" title="Project Completed" :total="metric.total_evaluation || 0"/>
                 </div>
 
@@ -100,6 +104,16 @@ const getRecommendations = async (genre) => {
                 <span><i class="ri-golf-ball-fill text-orange-500"></i>Project Completed</span>
             </div>
         </div>
+
+        <div class="flex flex-wrap mt-6 gap-3">
+            <div class="min-w-20 bg-white md:min-w-130">
+                <WeeklyTracker />
+            </div>
+            <div class="flex-1">
+            <Leaderboard />
+            </div>
+        </div>
+
         <div class="mt-10">
             <h2 class="font-semibold text-lg">Personal Development...</h2>
             <TodoCard />

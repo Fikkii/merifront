@@ -1,4 +1,5 @@
 <script setup>
+    import TechnologySection from './TechnologySection.vue'
     const testimonials = [
     {
         student: 'Amina T.',
@@ -21,9 +22,9 @@
 
 <template>
     <!-- Testimonials Section -->
-    <section class="bg-white py-12 px-6 lg:px-20">
+    <section class="py-12 px-6 lg:px-20">
         <div class="max-w-6xl mx-auto text-center">
-            <h2 class="text-2xl font-bold text-gray-800 mb-8">What our users are saying</h2>
+            <h2 class="text-3xl font-bold text-gray-800 mb-8">What our users are saying</h2>
             <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 <div data-aos="flip-right" v-for="testimonial in testimonials" class="bg-gray-50 shadow-sm rounded-lg p-6">
                     <p class="text-gray-700 italic">{{ testimonial.text }}</p>
@@ -31,6 +32,8 @@
                 </div>
             </div>
         </div>
+        <span class="text-red-500 text-xl font-bold">Limited Slots Available!!!</span>
+        <TechnologySection />
     </section>
 
 </template>

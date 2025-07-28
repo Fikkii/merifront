@@ -4,7 +4,7 @@ import { defineEmits } from 'vue'
 import { useRouter } from 'vue-router'
 import PaystackPop from '@paystack/inline-js'
 
-const props = defineProps(['email','amount', 'course'])
+const props = defineProps(['email', 'metadata','amount', 'course'])
 
 const router = useRouter()
 
@@ -39,6 +39,7 @@ const handleClick = async (email, amount) => {
       handler.newTransaction({
         key: 'pk_test_71133a49d4fa2f3e24d489e6ac3d4d8b8ec46951',
         email: email,
+        metadate: props.metadata,
         amount: amount * 100,  // Convert NGN to kobo
         currency: 'NGN',
         ref: '' + Math.floor(Math.random() * 1000000000),

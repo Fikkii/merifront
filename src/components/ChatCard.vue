@@ -1,5 +1,5 @@
 <template>
-  <div class="flex absolute flex-col h-[500px] bg-white dark:bg-gray-900 rounded-xl shadow p-4">
+  <div class="flex flex-col h-[500px] bg-white dark:bg-gray-900 rounded-xl shadow p-4">
     <div class="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-100">Chat with AI
     <div class="text-sm">Powered by Gemini</div></div>
     <SuggestionCard @click="handleSuggestion" v-if="suggestion"/>

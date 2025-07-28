@@ -4,31 +4,42 @@
 
 <template>
     <!-- Hero Section -->
-    <main class="grid grid-cols-1 lg:grid-cols-10 items-center px-6 lg:px-20 gap-10">
-      <!-- Text Content -->
-      <section class="lg:col-span-5 space-y-6">
-        <h1 class="text-4xl font-extrabold leading-tight">
-            Transforming Students into Leaders
-        </h1>
-        <p class="text-gray-400 text-lg">
-           Together, let's shape the future by connecting learning with real-world opportunities through impactful mentorship and hands-on training. 
-        </p>
-        <router-link to="/login" class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg shadow hover:bg-blue-700 transition">
-            Join the next cohort
-        </router-link>
-      </section>
-      <!-- Image -->
-      <section class="lg:col-span-5">
-        <img src="../assets/hero.png" alt="Coding Illustration" class="w-full max-w-sm mx-auto" />
-      </section>
+    <main>
+        <div class="max-w-6xl mx-auto px-6 flex pt-12 flex-col md:flex-row justify-evenly py-4">
+            <!-- Text Content -->
+            <section class="space-y-6">
+                <h1 class="text-4xl font-extrabold uppercase leading-tight">
+                    Start your journey into Tech
+                </h1>
+                <p class="text-gray-400 text-lg">
+                Together, let's shape the future by connecting learning with real-world opportunities through impactful mentorship and hands-on training. 
+                </p>
+                <div class="flex-col md:flex-row gap-3">
+                    <router-link to="/login" class="flex gap-3 max-w-1/4 bg-red-600 text-white px-6 py-3 rounded-lg shadow hover:bg-red-800 transition">
+                        <span>Start now</span>
+                        <i class="ri-arrow-right-line"></i>
+                    </router-link>
+                    <router-link to="/login" class="flex gap-3 max-w-2/4 text-red-600 font-bold px-6 py-3 rounded-lg transition">
+                        <span>About us</span>
+                        <i class="ri-arrow-right-line"></i>
+                    </router-link>
+                </div>
+            </section>
+            <!-- Image -->
+            <section>
+                <img src="../assets/hero.png" alt="Coding Illustration" class="w-full mx-auto" />
+            </section>
+        </div>
     </main>
 </template>
 
 <style scoped>
 
 main {
-    background-image: url('/hero.jpg')
+    background-image: url('/hero.jpg');
+    background-size: cover;
+    box-shadow: 0px 10px 12px 1px rgba(0, 0, 0, 0.5)
 }
-    
+
 </style>
 

@@ -1,0 +1,1 @@
+import{C as a}from"./ChatCard-CZZWKMis.js";import{c as t,o as e,b as o}from"./index-CJwAv-gi.js";import"./marked.esm-DKjyhwJX.js";const s={class:"w-full"},p={__name:"ChatPage",setup(c){return(r,_)=>(e(),t("div",s,[o(a,{class:"mx-auto block"})]))}};export{p as default};

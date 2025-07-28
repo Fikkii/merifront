@@ -31,7 +31,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="px-6 mt-[-20px mt-[-40px] lg:px-20 overflow-hidden">
+  <section class="px-6 mt-6 lg:px-20 overflow-hidden">
     <div class="max-w-6xl mx-auto text-center">
       <div class="carousel-track md:gap-20">
         <div
@@ -39,7 +39,7 @@ onMounted(() => {
           :key="index"
           class="carousel-item text-black text-5xl"
         >
-          <i :class="icon" :title="icon.replace('ri-', '').replace('-line', '')"></i>
+          <i class="text-black/50" :class="icon" :title="icon.replace('ri-', '').replace('-line', '')"></i>
         </div>
       </div>
     </div>

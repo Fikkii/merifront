@@ -4,10 +4,12 @@
 </script>
 
 <template>
-    <ChatCard />
+    <div class="w-full">
+        <ChatCard class="mx-auto block" />
+    </div>
 </template>
 
 <style scoped>
-    
+
 </style>
 

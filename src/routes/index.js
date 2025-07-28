@@ -154,6 +154,12 @@ const routes = [
                 component: () => import('../pages/LandingPage.vue'),
             },
             {
+                path: '/course-overview/:id',
+                name: 'course-overview',
+                props: true,
+                component: () => import('../components/CourseOverview.vue'),
+            },
+            {
                 path: 'login',
                 name: 'login',
                 component: () => import('../pages/LoginPage.vue'),
